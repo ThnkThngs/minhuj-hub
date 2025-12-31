@@ -3,43 +3,49 @@
 @tailwind utilities;
 
 /* Al-Qaws Archery Coach Design System
-   Theme: Dark cinematic with gold accents
-   Inspiration: Modern editorial, dramatic photography, minimal luxury
+   Theme: Futuristic dark with neon accents
+   Inspiration: Tech platform, neon glow, wireframe aesthetics
 */
 
-@import url('https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Inter:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&family=Inter:wght@300;400;500;600;700&display=swap');
 
 @layer base {
   :root {
-    /* Primary: Warm gold - heritage accent */
-    --primary: 38 70% 50%;
-    --primary-foreground: 0 0% 5%;
+    /* Primary: Vibrant orange/coral */
+    --primary: 14 90% 58%;
+    --primary-foreground: 0 0% 100%;
 
-    /* Background: Near black */
-    --background: 0 0% 4%;
-    --foreground: 0 0% 90%;
+    /* Background: Deep navy/dark blue */
+    --background: 220 50% 8%;
+    --foreground: 0 0% 95%;
 
-    /* Card: Slightly elevated dark */
-    --card: 0 0% 7%;
-    --card-foreground: 0 0% 90%;
+    /* Card: Slightly elevated dark blue */
+    --card: 220 45% 12%;
+    --card-foreground: 0 0% 95%;
 
-    --popover: 0 0% 7%;
-    --popover-foreground: 0 0% 90%;
+    --popover: 220 45% 12%;
+    --popover-foreground: 0 0% 95%;
 
-    /* Secondary: Dark gray */
-    --secondary: 0 0% 12%;
-    --secondary-foreground: 0 0% 85%;
+    /* Secondary: Medium dark blue */
+    --secondary: 220 40% 16%;
+    --secondary-foreground: 0 0% 90%;
 
-    /* Muted: Medium gray */
-    --muted: 0 0% 15%;
-    --muted-foreground: 0 0% 55%;
+    /* Muted: Dim blue-gray */
+    --muted: 220 30% 20%;
+    --muted-foreground: 220 15% 55%;
 
-    /* Accent: Gold */
-    --accent: 38 70% 50%;
-    --accent-foreground: 0 0% 5%;
+    /* Accent: Cyan neon */
+    --accent: 190 100% 50%;
+    --accent-foreground: 220 50% 8%;
+
+    /* Neon colors */
+    --neon-cyan: 190 100% 50%;
+    --neon-orange: 14 90% 58%;
+    --neon-red: 0 85% 55%;
+    --neon-blue: 220 90% 60%;
 
     /* Success: Green */
-    --success: 142 50% 40%;
+    --success: 142 50% 45%;
     --success-foreground: 142 20% 98%;
 
     /* Destructive: Red */
@@ -47,28 +53,30 @@
     --destructive-foreground: 0 0% 98%;
 
     /* Border & Input */
-    --border: 0 0% 15%;
-    --input: 0 0% 12%;
-    --ring: 38 70% 50%;
+    --border: 220 30% 18%;
+    --input: 220 35% 14%;
+    --ring: 190 100% 50%;
 
-    --radius: 0.5rem;
+    --radius: 0.25rem;
 
     /* Sidebar */
-    --sidebar-background: 0 0% 3%;
-    --sidebar-foreground: 0 0% 85%;
-    --sidebar-primary: 38 70% 50%;
-    --sidebar-primary-foreground: 0 0% 5%;
-    --sidebar-accent: 0 0% 10%;
-    --sidebar-accent-foreground: 0 0% 90%;
-    --sidebar-border: 0 0% 12%;
-    --sidebar-ring: 38 70% 50%;
+    --sidebar-background: 220 50% 6%;
+    --sidebar-foreground: 0 0% 90%;
+    --sidebar-primary: 14 90% 58%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 220 40% 14%;
+    --sidebar-accent-foreground: 0 0% 95%;
+    --sidebar-border: 220 30% 15%;
+    --sidebar-ring: 190 100% 50%;
 
     /* Custom tokens */
-    --gradient-gold: linear-gradient(135deg, hsl(38 70% 50%), hsl(32 80% 40%));
-    --shadow-gold: 0 0 40px -10px hsl(38 70% 50% / 0.3);
+    --gradient-neon: linear-gradient(135deg, hsl(190 100% 50%), hsl(14 90% 58%));
+    --gradient-glow: linear-gradient(180deg, hsl(220 50% 8%), hsl(220 60% 4%));
+    --shadow-neon-cyan: 0 0 30px -5px hsl(190 100% 50% / 0.5);
+    --shadow-neon-orange: 0 0 30px -5px hsl(14 90% 58% / 0.5);
 
     /* Typography */
-    --font-display: 'Amiri', serif;
+    --font-display: 'Playfair Display', serif;
     --font-body: 'Inter', sans-serif;
   }
 
@@ -93,42 +101,51 @@
 
 /* Custom utility classes */
 @layer utilities {
-  .gradient-gold {
-    background: var(--gradient-gold);
+  .gradient-neon {
+    background: var(--gradient-neon);
   }
 
-  .shadow-gold {
-    box-shadow: var(--shadow-gold);
+  .gradient-glow {
+    background: var(--gradient-glow);
+  }
+
+  .shadow-neon-cyan {
+    box-shadow: var(--shadow-neon-cyan);
+  }
+
+  .shadow-neon-orange {
+    box-shadow: var(--shadow-neon-orange);
   }
 
   .text-balance {
     text-wrap: balance;
   }
 
-  /* Corner markers utility */
-  .corner-markers {
-    position: relative;
+  /* Neon glow text */
+  .text-glow-cyan {
+    text-shadow: 0 0 20px hsl(190 100% 50% / 0.6), 0 0 40px hsl(190 100% 50% / 0.3);
   }
 
-  .corner-markers::before,
-  .corner-markers::after {
-    position: absolute;
-    font-size: 0.75rem;
-    color: hsl(var(--muted-foreground));
-    font-family: var(--font-body);
-    font-weight: 300;
+  .text-glow-orange {
+    text-shadow: 0 0 20px hsl(14 90% 58% / 0.6), 0 0 40px hsl(14 90% 58% / 0.3);
   }
 
-  .corner-markers::before {
-    content: '+';
-    top: 0.5rem;
-    left: 0.5rem;
+  /* Border glow */
+  .border-glow-cyan {
+    box-shadow: 0 0 15px hsl(190 100% 50% / 0.3), inset 0 0 15px hsl(190 100% 50% / 0.1);
   }
 
-  .corner-markers::after {
-    content: '+';
-    bottom: 0.5rem;
-    right: 0.5rem;
+  .border-glow-orange {
+    box-shadow: 0 0 15px hsl(14 90% 58% / 0.3), inset 0 0 15px hsl(14 90% 58% / 0.1);
+  }
+
+  /* Glass effect */
+  .glass {
+    @apply bg-background/60 backdrop-blur-md border border-border/30;
+  }
+
+  .glass-dark {
+    @apply bg-background/80 backdrop-blur-xl border border-border/20;
   }
 }
 
@@ -161,5 +178,59 @@
 
   .animate-marquee {
     animation: marquee 20s linear infinite;
+  }
+
+  /* Floating animation for labels */
+  @keyframes float {
+    0%, 100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-8px);
+    }
+  }
+
+  .animate-float {
+    animation: float 4s ease-in-out infinite;
+  }
+
+  .animate-float-delayed {
+    animation: float 4s ease-in-out 1s infinite;
+  }
+
+  .animate-float-delayed-2 {
+    animation: float 4s ease-in-out 2s infinite;
+  }
+
+  /* Pulse glow animation */
+  @keyframes pulse-glow {
+    0%, 100% {
+      opacity: 0.6;
+      transform: scale(1);
+    }
+    50% {
+      opacity: 1;
+      transform: scale(1.05);
+    }
+  }
+
+  .animate-pulse-glow {
+    animation: pulse-glow 3s ease-in-out infinite;
+  }
+
+  /* Line draw animation */
+  @keyframes draw-line {
+    0% {
+      stroke-dashoffset: 1000;
+    }
+    100% {
+      stroke-dashoffset: 0;
+    }
+  }
+
+  .animate-draw {
+    stroke-dasharray: 1000;
+    stroke-dashoffset: 1000;
+    animation: draw-line 2s ease-out forwards;
   }
 }
