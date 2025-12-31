@@ -10,6 +10,13 @@ const sources = [
     icon: ScrollText,
   },
   {
+    id: "saracen-archery",
+    title: "Saracen Archery",
+    subtitle: "A Mameluke Work on Archery (ca. A.D. 1368)",
+    description: "Translated by J.D. Latham (M.A., D.Phil. Oxon) and Cdr. W.F. Paterson. Published by The Holland Press, London, 1970. This detailed technical manual from medieval Egypt provides extensive instruction on archery techniques and equipment.",
+    icon: ScrollText,
+  },
+  {
     id: "mamluk-furusiyah",
     title: "Mamluk Furūsīyah Literature",
     subtitle: "Academic study by Shihab al-Sarraf",
