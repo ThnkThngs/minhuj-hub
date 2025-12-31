@@ -1,45 +1,73 @@
-import { Camera, Upload } from "lucide-react";
+import { Camera, Upload, History, CheckCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
+import { CornerFrame } from "@/components/ui/corner-frame";
 
 export default function Analyze() {
   return (
-    <div className="container py-6 space-y-6 animate-fade-in">
-      <div className="space-y-2">
-        <h1 className="text-2xl font-display font-bold">Technique Analyzer</h1>
-        <p className="text-muted-foreground">AI-powered form analysis for traditional archery</p>
-      </div>
+    <div className="animate-fade-in">
+      <div className="container py-12 space-y-8">
+        {/* Hero Header */}
+        <div className="space-y-2">
+          <h1 className="font-display text-4xl md:text-5xl font-bold">
+            Technique Analyzer
+          </h1>
+          <p className="text-muted-foreground text-lg">
+            AI-powered form analysis for traditional archery
+          </p>
+        </div>
 
-      <Card className="border-2 border-dashed border-primary/30">
-        <CardHeader className="text-center">
-          <div className="mx-auto w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center mb-4">
-            <Camera className="h-8 w-8 text-primary" />
+        {/* Analyze Form Card */}
+        <CornerFrame className="bg-card border border-border/50 p-8 md:p-12">
+          <div className="text-center space-y-6">
+            <div className="mx-auto w-20 h-20 rounded-full bg-primary/10 flex items-center justify-center">
+              <Camera className="h-10 w-10 text-primary" />
+            </div>
+            <div className="space-y-3">
+              <h2 className="font-display text-2xl md:text-3xl font-bold">
+                Analyze Your Form
+              </h2>
+              <p className="text-muted-foreground max-w-md mx-auto">
+                Upload a photo or video of your shooting form for AI analysis based on classical techniques
+              </p>
+            </div>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center max-w-md mx-auto">
+              <Button size="lg" className="flex-1 bg-primary hover:bg-primary/90 text-primary-foreground font-semibold">
+                <Camera className="mr-2 h-5 w-5" />
+                Take Photo
+              </Button>
+              <Button size="lg" variant="outline" className="flex-1 border-border hover:bg-secondary/50">
+                <Upload className="mr-2 h-5 w-5" />
+                Upload Image
+              </Button>
+            </div>
           </div>
-          <CardTitle className="font-display">Analyze Your Form</CardTitle>
-          <CardDescription>
-            Upload a photo or video of your shooting form for AI analysis
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="flex flex-col gap-3 pb-6">
-          <Button variant="default" className="w-full">
-            <Camera className="mr-2 h-4 w-4" />
-            Take Photo
-          </Button>
-          <Button variant="outline" className="w-full">
-            <Upload className="mr-2 h-4 w-4" />
-            Upload Image
-          </Button>
-        </CardContent>
-      </Card>
+        </CornerFrame>
 
-      <div className="space-y-4">
-        <h2 className="text-lg font-display font-semibold">Analysis History</h2>
-        <Card className="bg-muted/50">
-          <CardContent className="py-8 text-center text-muted-foreground">
-            <p>No analyses yet.</p>
-            <p className="text-sm mt-1">Upload your first photo to get AI feedback!</p>
-          </CardContent>
-        </Card>
+        {/* Analysis History Section */}
+        <div className="space-y-6">
+          <h2 className="font-display text-2xl font-semibold">Analysis History</h2>
+          
+          <Card className="bg-card border-border/50">
+            <CardContent className="py-12 text-center">
+              <div className="space-y-4">
+                <div className="flex justify-center gap-8 text-muted-foreground">
+                  <div className="flex items-center gap-2">
+                    <History className="h-5 w-5" />
+                    <span>No analyses</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <CheckCircle className="h-5 w-5" />
+                    <span>0 improvements</span>
+                  </div>
+                </div>
+                <p className="text-muted-foreground">
+                  Upload your first photo to get AI feedback on your technique
+                </p>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
       </div>
     </div>
   );

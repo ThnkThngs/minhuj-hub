@@ -1,64 +1,86 @@
-import { ScrollText, BookOpen, Heart } from "lucide-react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { ScrollText, Book, Heart, ExternalLink } from "lucide-react";
+import { CornerFrame } from "@/components/ui/corner-frame";
+
+const sources = [
+  {
+    id: "arab-archery",
+    title: "Arab Archery",
+    subtitle: "An Arabic manuscript of about A.D. 1500 'A book on the excellence of the bow & arrow'",
+    description: "Translated and edited by Nabih Amin Faris and Robert Potter Elmer. This comprehensive treatise forms the foundation of the classical archery knowledge in this app.",
+    icon: ScrollText,
+  },
+  {
+    id: "mamluk-furusiyah",
+    title: "Mamluk Furūsīyah Literature",
+    subtitle: "Academic study by Shihab al-Sarraf",
+    description: "Scholarly analysis that provides historical context and training methodology insights into Islamic martial arts traditions.",
+    icon: Book,
+  },
+];
 
 export default function Credits() {
   return (
-    <div className="container py-6 space-y-6 animate-fade-in">
-      <div className="space-y-2">
-        <h1 className="text-2xl font-display font-bold">Credits & Sources</h1>
-        <p className="text-muted-foreground">Acknowledging the wisdom of the masters</p>
+    <div className="animate-fade-in">
+      <div className="container py-12 space-y-8">
+        {/* Hero Header */}
+        <div className="space-y-2">
+          <h1 className="font-display text-4xl md:text-5xl font-bold">
+            Credits & Sources
+          </h1>
+          <p className="text-muted-foreground text-lg">
+            Acknowledgments and references behind Al-Qaws
+          </p>
+        </div>
+
+        {/* Sources */}
+        <div className="grid gap-6">
+          {sources.map((source) => (
+            <CornerFrame
+              key={source.id}
+              className="bg-card border border-border/50 p-6 md:p-8"
+            >
+              <div className="flex items-start gap-6">
+                <div className="w-14 h-14 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0">
+                  <source.icon className="h-7 w-7 text-primary" />
+                </div>
+                <div className="flex-1 min-w-0 space-y-3">
+                  <div>
+                    <h3 className="font-display text-xl md:text-2xl font-bold">
+                      {source.title}
+                    </h3>
+                    <p className="text-sm text-muted-foreground mt-1">
+                      {source.subtitle}
+                    </p>
+                  </div>
+                  <p className="text-muted-foreground">
+                    {source.description}
+                  </p>
+                  <button className="text-primary hover:text-primary/80 text-sm font-medium inline-flex items-center gap-1 transition-colors">
+                    Learn more <ExternalLink className="h-3 w-3" />
+                  </button>
+                </div>
+              </div>
+            </CornerFrame>
+          ))}
+        </div>
+
+        {/* Dedication */}
+        <CornerFrame className="bg-card border border-border/50 p-8 md:p-12">
+          <div className="text-center space-y-6">
+            <div className="mx-auto w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center">
+              <Heart className="h-8 w-8 text-primary" />
+            </div>
+            <div className="space-y-3 max-w-2xl mx-auto">
+              <h3 className="font-display text-2xl font-bold">
+                Built with Passion
+              </h3>
+              <p className="text-muted-foreground leading-relaxed">
+                Al-Qaws is built with deep respect for the classical archery tradition and the scholars who preserved this knowledge. Our goal is to make these timeless teachings accessible to modern practitioners seeking to master the art of the bow.
+              </p>
+            </div>
+          </div>
+        </CornerFrame>
       </div>
-
-      <Card className="bg-gradient-to-br from-primary/5 to-accent/5">
-        <CardHeader>
-          <div className="flex items-center gap-3">
-            <ScrollText className="h-6 w-6 text-primary" />
-            <CardTitle className="font-display">Arab Archery</CardTitle>
-          </div>
-        </CardHeader>
-        <CardContent className="space-y-3 text-sm">
-          <p className="text-muted-foreground">
-            A 15th-century Moroccan manuscript translated and edited by Nabih Amin Faris and Robert Potter Elmer. 
-            This comprehensive treatise on traditional archery serves as the foundation for the AI coaching 
-            and technique guidance in Al-Qaws.
-          </p>
-          <p className="text-xs text-muted-foreground">
-            Published from Princeton University Library's Garrett Collection of Arabic Manuscripts.
-          </p>
-        </CardContent>
-      </Card>
-
-      <Card>
-        <CardHeader>
-          <div className="flex items-center gap-3">
-            <BookOpen className="h-6 w-6 text-primary" />
-            <CardTitle className="font-display">Mamluk Furūsīyah Literature</CardTitle>
-          </div>
-        </CardHeader>
-        <CardContent className="space-y-3 text-sm">
-          <p className="text-muted-foreground">
-            Academic study by Shihab al-Sarraf from the International Center of Furusiyya Studies. 
-            This scholarly work provides historical context and analysis of Islamic martial arts traditions, 
-            informing the cultural and historical aspects of Al-Qaws.
-          </p>
-          <p className="text-xs text-muted-foreground">
-            Published in Mamluk Studies Review, Vol. VIII, 2004.
-          </p>
-        </CardContent>
-      </Card>
-
-      <Card className="border-accent/30">
-        <CardContent className="py-6">
-          <div className="flex items-center justify-center gap-2 text-accent">
-            <Heart className="h-5 w-5 fill-current" />
-            <p className="font-display font-medium">Built with love for the tradition</p>
-          </div>
-          <p className="text-xs text-muted-foreground text-center mt-2">
-            Al-Qaws aims to preserve and promote the noble art of traditional Islamic archery, 
-            guided by the authentic teachings of the classical masters.
-          </p>
-        </CardContent>
-      </Card>
     </div>
   );
 }
