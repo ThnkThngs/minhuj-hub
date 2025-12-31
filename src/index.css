@@ -3,72 +3,69 @@
 @tailwind utilities;
 
 /* Al-Qaws Archery Coach Design System
-   Theme: Traditional Islamic archery with earthy, warm tones
-   Inspiration: Desert landscapes, leather, wood, gold accents, Islamic geometric patterns
+   Theme: Dark cinematic with gold accents
+   Inspiration: Modern editorial, dramatic photography, minimal luxury
 */
 
 @import url('https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Inter:wght@400;500;600;700&display=swap');
 
 @layer base {
   :root {
-    /* Primary: Deep wood brown - represents the bow */
-    --primary: 25 65% 25%;
-    --primary-foreground: 40 30% 95%;
+    /* Primary: Warm gold - heritage accent */
+    --primary: 38 70% 50%;
+    --primary-foreground: 0 0% 5%;
 
-    /* Background: Warm parchment */
-    --background: 40 30% 96%;
-    --foreground: 25 40% 15%;
+    /* Background: Near black */
+    --background: 0 0% 4%;
+    --foreground: 0 0% 90%;
 
-    /* Card: Slightly warmer than background */
-    --card: 40 35% 98%;
-    --card-foreground: 25 40% 15%;
+    /* Card: Slightly elevated dark */
+    --card: 0 0% 7%;
+    --card-foreground: 0 0% 90%;
 
-    --popover: 40 35% 98%;
-    --popover-foreground: 25 40% 15%;
+    --popover: 0 0% 7%;
+    --popover-foreground: 0 0% 90%;
 
-    /* Secondary: Warm sand */
-    --secondary: 35 30% 88%;
-    --secondary-foreground: 25 50% 20%;
+    /* Secondary: Dark gray */
+    --secondary: 0 0% 12%;
+    --secondary-foreground: 0 0% 85%;
 
-    /* Muted: Soft earth */
-    --muted: 35 20% 90%;
-    --muted-foreground: 25 20% 45%;
+    /* Muted: Medium gray */
+    --muted: 0 0% 15%;
+    --muted-foreground: 0 0% 55%;
 
-    /* Accent: Gold - represents achievement */
-    --accent: 42 85% 55%;
-    --accent-foreground: 25 50% 15%;
+    /* Accent: Gold */
+    --accent: 38 70% 50%;
+    --accent-foreground: 0 0% 5%;
 
-    /* Success: Forest green - represents growth */
-    --success: 142 50% 35%;
+    /* Success: Green */
+    --success: 142 50% 40%;
     --success-foreground: 142 20% 98%;
 
-    /* Destructive: Deep red */
-    --destructive: 0 65% 45%;
+    /* Destructive: Red */
+    --destructive: 0 65% 50%;
     --destructive-foreground: 0 0% 98%;
 
     /* Border & Input */
-    --border: 35 25% 82%;
-    --input: 35 25% 85%;
-    --ring: 42 85% 55%;
+    --border: 0 0% 15%;
+    --input: 0 0% 12%;
+    --ring: 38 70% 50%;
 
-    --radius: 0.75rem;
+    --radius: 0.5rem;
 
     /* Sidebar */
-    --sidebar-background: 25 30% 18%;
-    --sidebar-foreground: 40 30% 92%;
-    --sidebar-primary: 42 85% 55%;
-    --sidebar-primary-foreground: 25 50% 15%;
-    --sidebar-accent: 25 35% 25%;
-    --sidebar-accent-foreground: 40 30% 92%;
-    --sidebar-border: 25 30% 25%;
-    --sidebar-ring: 42 85% 55%;
+    --sidebar-background: 0 0% 3%;
+    --sidebar-foreground: 0 0% 85%;
+    --sidebar-primary: 38 70% 50%;
+    --sidebar-primary-foreground: 0 0% 5%;
+    --sidebar-accent: 0 0% 10%;
+    --sidebar-accent-foreground: 0 0% 90%;
+    --sidebar-border: 0 0% 12%;
+    --sidebar-ring: 38 70% 50%;
 
     /* Custom tokens */
-    --gradient-gold: linear-gradient(135deg, hsl(42 85% 55%), hsl(38 90% 45%));
-    --gradient-wood: linear-gradient(180deg, hsl(25 65% 25%), hsl(20 55% 18%));
-    --gradient-parchment: linear-gradient(180deg, hsl(40 30% 96%), hsl(38 25% 90%));
-    --shadow-warm: 0 4px 20px -4px hsl(25 30% 20% / 0.15);
-    --shadow-gold: 0 4px 20px -4px hsl(42 85% 55% / 0.3);
+    --gradient-gold: linear-gradient(135deg, hsl(38 70% 50%), hsl(32 80% 40%));
+    --shadow-gold: 0 0 40px -10px hsl(38 70% 50% / 0.3);
 
     /* Typography */
     --font-display: 'Amiri', serif;
@@ -76,55 +73,7 @@
   }
 
   .dark {
-    /* Primary: Lighter wood tones for dark mode */
-    --primary: 35 50% 65%;
-    --primary-foreground: 25 40% 10%;
-
-    /* Background: Deep charcoal with warm undertones */
-    --background: 25 25% 8%;
-    --foreground: 40 20% 92%;
-
-    /* Card: Slightly elevated surface */
-    --card: 25 22% 12%;
-    --card-foreground: 40 20% 92%;
-
-    --popover: 25 22% 12%;
-    --popover-foreground: 40 20% 92%;
-
-    /* Secondary */
-    --secondary: 25 20% 18%;
-    --secondary-foreground: 40 20% 88%;
-
-    /* Muted */
-    --muted: 25 18% 15%;
-    --muted-foreground: 35 15% 55%;
-
-    /* Accent: Brighter gold for dark mode */
-    --accent: 42 90% 50%;
-    --accent-foreground: 25 50% 10%;
-
-    /* Success */
-    --success: 142 55% 45%;
-    --success-foreground: 142 20% 10%;
-
-    /* Destructive */
-    --destructive: 0 60% 50%;
-    --destructive-foreground: 0 0% 98%;
-
-    /* Border & Input */
-    --border: 25 20% 20%;
-    --input: 25 20% 18%;
-    --ring: 42 90% 50%;
-
-    /* Sidebar */
-    --sidebar-background: 25 28% 6%;
-    --sidebar-foreground: 40 20% 90%;
-    --sidebar-primary: 42 90% 50%;
-    --sidebar-primary-foreground: 25 50% 10%;
-    --sidebar-accent: 25 22% 14%;
-    --sidebar-accent-foreground: 40 20% 90%;
-    --sidebar-border: 25 22% 14%;
-    --sidebar-ring: 42 90% 50%;
+    /* Same as root - dark by default */
   }
 }
 
@@ -147,19 +96,7 @@
   .gradient-gold {
     background: var(--gradient-gold);
   }
-  
-  .gradient-wood {
-    background: var(--gradient-wood);
-  }
-  
-  .gradient-parchment {
-    background: var(--gradient-parchment);
-  }
-  
-  .shadow-warm {
-    box-shadow: var(--shadow-warm);
-  }
-  
+
   .shadow-gold {
     box-shadow: var(--shadow-gold);
   }
@@ -168,9 +105,30 @@
     text-wrap: balance;
   }
 
-  /* Islamic geometric pattern overlay (subtle) */
-  .pattern-geometric {
-    background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M30 0L60 30L30 60L0 30Z' fill='none' stroke='%23d4a574' stroke-opacity='0.08' stroke-width='1'/%3E%3C/svg%3E");
+  /* Corner markers utility */
+  .corner-markers {
+    position: relative;
+  }
+
+  .corner-markers::before,
+  .corner-markers::after {
+    position: absolute;
+    font-size: 0.75rem;
+    color: hsl(var(--muted-foreground));
+    font-family: var(--font-body);
+    font-weight: 300;
+  }
+
+  .corner-markers::before {
+    content: '+';
+    top: 0.5rem;
+    left: 0.5rem;
+  }
+
+  .corner-markers::after {
+    content: '+';
+    bottom: 0.5rem;
+    right: 0.5rem;
   }
 }
 
@@ -181,12 +139,27 @@
     -webkit-touch-callout: none;
   }
 
-  /* Safe area insets for mobile */
   .safe-top {
     padding-top: env(safe-area-inset-top);
   }
-  
+
   .safe-bottom {
     padding-bottom: env(safe-area-inset-bottom);
+  }
+}
+
+/* Marquee animation */
+@layer utilities {
+  @keyframes marquee {
+    0% {
+      transform: translateX(0%);
+    }
+    100% {
+      transform: translateX(-50%);
+    }
+  }
+
+  .animate-marquee {
+    animation: marquee 20s linear infinite;
   }
 }

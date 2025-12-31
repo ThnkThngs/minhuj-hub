@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { Award, ChevronRight } from "lucide-react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
+import { CornerFrame } from "@/components/ui/corner-frame";
 
 export function ProgressSummary() {
   const currentRank = "Beginner";
@@ -10,27 +10,25 @@ export function ProgressSummary() {
   const progressPercent = (currentXP / nextLevelXP) * 100;
 
   return (
-    <Link to="/progress">
-      <Card className="hover:shadow-warm transition-shadow">
-        <CardHeader className="pb-2">
-          <div className="flex items-center justify-between">
-            <CardTitle className="text-sm font-medium text-muted-foreground flex items-center gap-2">
-              <Award className="h-4 w-4 text-accent" />
-              Your Progress
-            </CardTitle>
-            <ChevronRight className="h-4 w-4 text-muted-foreground" />
+    <Link to="/progress" className="block group">
+      <CornerFrame className="bg-card border border-border/50 p-6 hover:bg-secondary/30 transition-all">
+        <div className="flex items-center justify-between mb-4">
+          <div className="flex items-center gap-2 text-muted-foreground">
+            <Award className="h-4 w-4 text-primary" />
+            <span className="text-sm uppercase tracking-wider">Your Progress</span>
           </div>
-        </CardHeader>
-        <CardContent className="space-y-3">
+          <ChevronRight className="h-4 w-4 text-muted-foreground group-hover:text-primary transition-colors" />
+        </div>
+        <div className="space-y-3">
           <div className="flex items-center justify-between">
-            <span className="font-display font-semibold">{currentRank}</span>
+            <span className="font-display text-lg font-semibold">{currentRank}</span>
             <span className="text-xs text-muted-foreground">
               {currentXP} / {nextLevelXP} XP
             </span>
           </div>
-          <Progress value={progressPercent} className="h-2" />
-        </CardContent>
-      </Card>
+          <Progress value={progressPercent} className="h-1 bg-secondary" />
+        </div>
+      </CornerFrame>
     </Link>
   );
 }
