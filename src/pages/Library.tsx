@@ -11,6 +11,14 @@ const manuscripts = [
     icon: ScrollText,
   },
   {
+    id: "saracen-archery",
+    title: "Saracen Archery",
+    subtitle: "A Mameluke Work on Archery (ca. A.D. 1368)",
+    chapters: 34,
+    description: "Detailed technical instruction from medieval Egypt covering equipment construction, shooting techniques, and mounted combat.",
+    icon: ScrollText,
+  },
+  {
     id: "mamluk-furusiyah",
     title: "Mamluk Furusiyah Literature",
     subtitle: "Academic Study by Shihab al-Sarraf",
