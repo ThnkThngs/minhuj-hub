@@ -1,0 +1,18 @@
+{
+  "name": "Al-Qaws Archery Coach",
+  "short_name": "Al-Qaws",
+  "description": "Master traditional Islamic archery with AI-powered coaching",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#f5f0e8",
+  "theme_color": "#5c3a21",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/favicon.ico",
+      "sizes": "64x64",
+      "type": "image/x-icon"
+    }
+  ],
+  "categories": ["sports", "education", "lifestyle"]
+}
