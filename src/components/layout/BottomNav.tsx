@@ -12,7 +12,7 @@ const navItems = [
 
 export function BottomNav() {
   return (
-    <nav className="fixed bottom-0 left-0 right-0 z-50 bg-card border-t border-border safe-bottom">
+    <nav className="fixed bottom-0 left-0 right-0 z-50 bg-card/90 backdrop-blur-sm border-t border-border/50 safe-bottom md:hidden">
       <div className="flex items-center justify-around py-2">
         {navItems.map((item) => (
           <NavLink
@@ -22,7 +22,7 @@ export function BottomNav() {
               cn(
                 "flex flex-col items-center gap-1 px-3 py-2 rounded-lg transition-all min-w-[60px]",
                 isActive
-                  ? "text-accent"
+                  ? "text-primary"
                   : "text-muted-foreground hover:text-foreground"
               )
             }
@@ -36,8 +36,8 @@ export function BottomNav() {
                   )}
                 />
                 <span className={cn(
-                  "text-xs font-medium",
-                  isActive && "font-semibold"
+                  "text-xs",
+                  isActive ? "font-medium" : "font-normal"
                 )}>
                   {item.label}
                 </span>

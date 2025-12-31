@@ -1,76 +1,58 @@
 import { Link } from "react-router-dom";
-import { Target, BookOpen, Camera, Library } from "lucide-react";
-import { Card, CardContent } from "@/components/ui/card";
-import { cn } from "@/lib/utils";
+import { Target, BookOpen, Crosshair, Library } from "lucide-react";
+import { CornerFrame } from "@/components/ui/corner-frame";
 
 const actions = [
   {
     to: "/sessions",
     icon: Target,
     label: "New Session",
-    description: "AI training plan",
-    gradient: "from-accent/20 to-accent/5",
-    iconColor: "text-accent",
+    description: "AI-generated training plans based on classical manuscripts",
   },
   {
     to: "/analyze",
-    icon: Camera,
+    icon: Crosshair,
     label: "Analyze",
-    description: "Check your form",
-    gradient: "from-primary/20 to-primary/5",
-    iconColor: "text-primary",
+    description: "Upload your form for AI technique analysis",
   },
   {
     to: "/stories",
     icon: BookOpen,
-    label: "Stories",
-    description: "Heritage tales",
-    gradient: "from-success/20 to-success/5",
-    iconColor: "text-success",
+    label: "Heritage Stories",
+    description: "Discover tales of the Sahaba and archery tradition",
   },
   {
     to: "/library",
     icon: Library,
     label: "Library",
-    description: "Classical texts",
-    gradient: "from-primary/10 to-accent/5",
-    iconColor: "text-primary",
+    description: "Browse classical archery manuscripts",
   },
 ];
 
 export function QuickActions() {
   return (
-    <div className="space-y-3">
-      <h2 className="text-sm font-medium text-muted-foreground uppercase tracking-wide">
-        Quick Actions
-      </h2>
-      <div className="grid grid-cols-2 gap-3">
-        {actions.map((action) => (
-          <Link key={action.to} to={action.to}>
-            <Card
-              className={cn(
-                "h-full transition-all hover:shadow-warm hover:scale-[1.02] active:scale-[0.98]",
-                `bg-gradient-to-br ${action.gradient}`
-              )}
-            >
-              <CardContent className="p-4">
-                <div
-                  className={cn(
-                    "w-10 h-10 rounded-lg bg-background/80 flex items-center justify-center mb-3",
-                    action.iconColor
-                  )}
-                >
-                  <action.icon className="h-5 w-5" />
+    <section className="py-12">
+      <div className="container">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          {actions.map((action) => (
+            <Link key={action.to} to={action.to} className="group">
+              <CornerFrame className="bg-card hover:bg-secondary/50 border border-border/50 p-8 h-full transition-all duration-300">
+                <div className="flex flex-col gap-4">
+                  <action.icon className="h-6 w-6 text-primary" />
+                  <div>
+                    <h3 className="font-display text-xl font-semibold mb-1 group-hover:text-primary transition-colors">
+                      {action.label}
+                    </h3>
+                    <p className="text-sm text-muted-foreground leading-relaxed">
+                      {action.description}
+                    </p>
+                  </div>
                 </div>
-                <h3 className="font-medium text-sm">{action.label}</h3>
-                <p className="text-xs text-muted-foreground mt-0.5">
-                  {action.description}
-                </p>
-              </CardContent>
-            </Card>
-          </Link>
-        ))}
+              </CornerFrame>
+            </Link>
+          ))}
+        </div>
       </div>
-    </div>
+    </section>
   );
 }
