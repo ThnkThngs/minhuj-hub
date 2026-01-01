@@ -165,35 +165,9 @@
   }
 }
 
-/* Marquee animation */
+/* Custom animation utilities - keyframes defined in tailwind.config.ts */
 @layer utilities {
-  @keyframes marquee {
-    0% {
-      transform: translateX(0%);
-    }
-    100% {
-      transform: translateX(-50%);
-    }
-  }
-
-  .animate-marquee {
-    animation: marquee 20s linear infinite;
-  }
-
-  /* Floating animation for labels */
-  @keyframes float {
-    0%, 100% {
-      transform: translateY(0);
-    }
-    50% {
-      transform: translateY(-8px);
-    }
-  }
-
-  .animate-float {
-    animation: float 4s ease-in-out infinite;
-  }
-
+  /* Floating animation delays */
   .animate-float-delayed {
     animation: float 4s ease-in-out 1s infinite;
   }
@@ -202,23 +176,7 @@
     animation: float 4s ease-in-out 2s infinite;
   }
 
-  /* Pulse glow animation */
-  @keyframes pulse-glow {
-    0%, 100% {
-      opacity: 0.6;
-      transform: scale(1);
-    }
-    50% {
-      opacity: 1;
-      transform: scale(1.05);
-    }
-  }
-
-  .animate-pulse-glow {
-    animation: pulse-glow 3s ease-in-out infinite;
-  }
-
-  /* Line draw animation */
+  /* Line draw animations for SVGs */
   @keyframes draw-line {
     0% {
       stroke-dashoffset: 1000;
@@ -251,6 +209,7 @@
     animation: draw-slow 1.5s ease-out forwards;
   }
 
+  /* Gradient glow background utility */
   .gradient-glow {
     background: radial-gradient(ellipse at 30% 50%, hsl(var(--primary) / 0.15) 0%, transparent 50%),
                 radial-gradient(ellipse at 70% 30%, hsl(var(--accent) / 0.1) 0%, transparent 40%),
