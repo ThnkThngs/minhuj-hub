@@ -10,18 +10,7 @@ import {
 } from "@/components/ui/sheet";
 import { NavLink, Link } from "react-router-dom";
 import { cn } from "@/lib/utils";
-
-const menuLinks = [
-  { to: "/", label: "Home" },
-  { to: "/sessions", label: "Sessions" },
-  { to: "/stories", label: "Heritage Stories" },
-  { to: "/library", label: "Classical Library" },
-  { to: "/analyze", label: "Technique Analysis" },
-  { to: "/progress", label: "My Progress" },
-  { to: "/equipment", label: "Equipment" },
-  { to: "/community", label: "Community" },
-  { to: "/credits", label: "Credits" },
-];
+import { menuLinks } from "@/config/navigation";
 
 export function TopHeader() {
   const [isOpen, setIsOpen] = useState(false);
