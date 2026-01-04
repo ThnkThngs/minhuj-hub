@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import {
   Sheet,
   SheetContent,
+  SheetDescription,
   SheetHeader,
   SheetTitle,
   SheetTrigger,
@@ -44,6 +45,7 @@ export function TopHeader() {
           <SheetContent side="right" className="w-80 bg-card/95 backdrop-blur-xl border-border">
             <SheetHeader>
               <SheetTitle className="text-foreground font-display text-2xl">Al-Qaws</SheetTitle>
+              <SheetDescription className="sr-only">Navigation menu</SheetDescription>
             </SheetHeader>
             <nav className="mt-8 flex flex-col gap-1">
               {menuLinks.map((link) => (
