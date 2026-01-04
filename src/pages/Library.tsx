@@ -39,25 +39,25 @@ export default function Library() {
 
   return (
     <div className="animate-fade-in">
-      <div className="container py-8 md:py-12 space-y-8">
+      <div className="container py-6 md:py-8 lg:py-12 space-y-6 md:space-y-8">
         {/* Hero Header */}
-        <div className="space-y-4">
-          <div className="flex items-center gap-3">
-            <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center">
-              <BookOpen className="h-6 w-6 text-primary" />
+        <div className="space-y-3 md:space-y-4">
+          <div className="flex items-center gap-2 md:gap-3">
+            <div className="w-10 h-10 md:w-12 md:h-12 rounded-xl bg-primary/10 flex items-center justify-center shrink-0">
+              <BookOpen className="h-5 w-5 md:h-6 md:w-6 text-primary" />
             </div>
             <div>
-              <h1 className="font-display text-3xl md:text-4xl font-bold">
+              <h1 className="font-display text-2xl md:text-3xl lg:text-4xl font-bold">
                 Classical Library
               </h1>
-              <p className="text-muted-foreground">
+              <p className="text-muted-foreground text-sm md:text-base">
                 Master techniques from the golden age of archery
               </p>
             </div>
           </div>
 
           {/* Stats bar */}
-          <div className="flex flex-wrap items-center gap-4 text-sm">
+          <div className="flex flex-wrap items-center gap-2 md:gap-4 text-xs md:text-sm">
             <div className="flex items-center gap-2 text-muted-foreground">
               <Sparkles className="h-4 w-4 text-primary" />
               <span>
