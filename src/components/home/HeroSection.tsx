@@ -8,7 +8,7 @@ export function HeroSection() {
   const isVisible = useEntranceAnimation(100);
 
   return (
-    <section className="relative min-h-screen flex flex-col justify-center overflow-hidden">
+    <section className="relative min-h-[85vh] md:min-h-screen flex flex-col justify-center overflow-hidden">
       {/* Background gradient with parallax */}
       <div 
         className="absolute inset-0 gradient-glow transition-transform duration-100"
@@ -57,11 +57,11 @@ export function HeroSection() {
         className="relative z-10 container transition-all duration-100"
         style={getOpacityStyle(100, 500)}
       >
-        <div className="grid lg:grid-cols-2 gap-8 items-center min-h-[80vh] py-20">
+        <div className="grid lg:grid-cols-2 gap-6 md:gap-8 items-center min-h-[70vh] md:min-h-[80vh] py-12 md:py-20">
           
           {/* Left side - Bow illustration with floating labels and parallax */}
           <div 
-            className={`relative flex items-center justify-center transition-all duration-700 ease-out ${
+            className={`relative flex items-center justify-center transition-all duration-700 ease-out order-2 lg:order-1 ${
               isVisible ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-20'
             }`}
             style={{
@@ -71,48 +71,48 @@ export function HeroSection() {
           >
             <BowIllustration isVisible={isVisible} />
 
-            {/* Floating Labels with staggered animations */}
+            {/* Floating Labels with staggered animations - hidden on very small screens */}
             <div 
-              className={`absolute top-1/4 right-0 md:right-8 animate-float transition-all duration-700 ${
+              className={`absolute top-1/4 right-0 md:right-8 animate-float transition-all duration-700 hidden sm:block max-w-[160px] ${
                 isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
               }`}
               style={{ transitionDelay: '600ms' }}
             >
-              <div className="flex items-center gap-3 glass-dark px-4 py-2 rounded-lg">
-                <div className="w-2 h-2 rounded-full bg-accent shadow-neon-cyan animate-pulse" />
-                <div className="text-sm text-foreground/90">
+              <div className="flex items-center gap-2 md:gap-3 glass-dark px-3 md:px-4 py-1.5 md:py-2 rounded-lg">
+                <div className="w-2 h-2 rounded-full bg-accent shadow-neon-cyan animate-pulse shrink-0" />
+                <div className="text-xs md:text-sm text-foreground/90">
                   <div className="font-medium">Thumb Draw</div>
-                  <div className="text-xs text-muted-foreground">Traditional Release</div>
+                  <div className="text-[10px] md:text-xs text-muted-foreground">Traditional Release</div>
                 </div>
               </div>
             </div>
 
             <div 
-              className={`absolute bottom-1/3 right-4 md:right-12 animate-float-delayed transition-all duration-700 ${
+              className={`absolute bottom-1/3 right-4 md:right-12 animate-float-delayed transition-all duration-700 hidden sm:block max-w-[160px] ${
                 isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
               }`}
               style={{ transitionDelay: '800ms' }}
             >
-              <div className="flex items-center gap-3 glass-dark px-4 py-2 rounded-lg">
-                <div className="w-2 h-2 rounded-full bg-primary shadow-neon-orange animate-pulse" />
-                <div className="text-sm text-foreground/90">
+              <div className="flex items-center gap-2 md:gap-3 glass-dark px-3 md:px-4 py-1.5 md:py-2 rounded-lg">
+                <div className="w-2 h-2 rounded-full bg-primary shadow-neon-orange animate-pulse shrink-0" />
+                <div className="text-xs md:text-sm text-foreground/90">
                   <div className="font-medium">Khatra</div>
-                  <div className="text-xs text-muted-foreground">Power Technique</div>
+                  <div className="text-[10px] md:text-xs text-muted-foreground">Power Technique</div>
                 </div>
               </div>
             </div>
 
             <div 
-              className={`absolute top-1/2 left-0 md:left-4 animate-float-delayed-2 transition-all duration-700 ${
+              className={`absolute top-1/2 left-0 md:left-4 animate-float-delayed-2 transition-all duration-700 hidden sm:block max-w-[160px] ${
                 isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
               }`}
               style={{ transitionDelay: '1000ms' }}
             >
-              <div className="flex items-center gap-3 glass-dark px-4 py-2 rounded-lg">
-                <div className="w-2 h-2 rounded-full bg-neon-cyan shadow-neon-cyan animate-pulse" />
-                <div className="text-sm text-foreground/90">
+              <div className="flex items-center gap-2 md:gap-3 glass-dark px-3 md:px-4 py-1.5 md:py-2 rounded-lg">
+                <div className="w-2 h-2 rounded-full bg-neon-cyan shadow-neon-cyan animate-pulse shrink-0" />
+                <div className="text-xs md:text-sm text-foreground/90">
                   <div className="font-medium">Arrow Flight</div>
-                  <div className="text-xs text-muted-foreground">Precision Path</div>
+                  <div className="text-[10px] md:text-xs text-muted-foreground">Precision Path</div>
                 </div>
               </div>
             </div>
@@ -120,12 +120,12 @@ export function HeroSection() {
 
           {/* Right side - Typography with scroll reveal */}
           <div 
-            className={`text-right space-y-6 transition-all duration-700 ease-out ${
+            className={`text-right space-y-4 md:space-y-6 transition-all duration-700 ease-out order-1 lg:order-2 ${
               isVisible ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-20'
             }`}
             style={{ transitionDelay: '300ms' }}
           >
-            <h1 className="font-display text-5xl md:text-6xl lg:text-7xl xl:text-8xl leading-[0.9] tracking-tight">
+            <h1 className="font-display text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl leading-[0.9] tracking-tight">
               <span 
                 className={`text-primary italic block transition-all duration-700 ${
                   isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
@@ -157,7 +157,7 @@ export function HeroSection() {
 
       {/* Bottom left - Description box with slide-up animation */}
       <div 
-        className={`absolute bottom-24 left-0 z-20 transition-all duration-700 ease-out ${
+        className={`absolute bottom-20 md:bottom-24 left-0 z-20 transition-all duration-700 ease-out ${
           isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'
         }`}
         style={{ 
@@ -165,8 +165,8 @@ export function HeroSection() {
           ...getOpacityStyle(200, 600)
         }}
       >
-        <div className="glass-dark max-w-md p-6 ml-4 md:ml-8 border-l-2 border-primary/50">
-          <p className="text-sm md:text-base text-foreground/90 leading-relaxed">
+        <div className="glass-dark max-w-[90vw] md:max-w-md p-4 md:p-6 ml-2 md:ml-8 border-l-2 border-primary/50">
+          <p className="text-xs sm:text-sm md:text-base text-foreground/90 leading-relaxed">
             Master the art of the bow with AI-powered training based on classical manuscripts. 
             Learn authentic techniques from the Sahaba tradition with personalized coaching.
           </p>

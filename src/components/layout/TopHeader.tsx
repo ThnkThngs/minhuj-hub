@@ -17,15 +17,15 @@ export function TopHeader() {
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50 safe-top">
-      <div className="flex items-center gap-2 px-4 md:px-6 py-4">
+      <div className="flex items-center gap-2 px-3 md:px-6 py-3 md:py-4">
         {/* Logo box */}
-        <div className="glass-dark px-4 py-2 flex items-center gap-3">
-          <div className="w-8 h-8 rounded-full bg-primary flex items-center justify-center">
-            <span className="font-display text-primary-foreground text-sm font-bold">ق</span>
+        <div className="glass-dark px-3 py-1.5 md:px-4 md:py-2 flex items-center gap-2 md:gap-3">
+          <div className="w-7 h-7 md:w-8 md:h-8 rounded-full bg-primary flex items-center justify-center">
+            <span className="font-display text-primary-foreground text-xs md:text-sm font-bold">ق</span>
           </div>
           <div>
-            <h1 className="font-display text-lg font-bold tracking-wide leading-none">Al-Qaws</h1>
-            <p className="text-[10px] text-muted-foreground tracking-wider">Archery Academy</p>
+            <h1 className="font-display text-base md:text-lg font-bold tracking-wide leading-none">Al-Qaws</h1>
+            <p className="text-[9px] md:text-[10px] text-muted-foreground tracking-wider">Archery Academy</p>
           </div>
         </div>
 
@@ -35,9 +35,9 @@ export function TopHeader() {
             <Button 
               variant="ghost" 
               size="icon" 
-              className="glass-dark text-foreground hover:bg-secondary/50 w-10 h-10"
+              className="glass-dark text-foreground hover:bg-secondary/50 w-9 h-9 md:w-10 md:h-10"
             >
-              <Menu className="h-5 w-5" />
+              <Menu className="h-4 w-4 md:h-5 md:w-5" />
               <span className="sr-only">Open menu</span>
             </Button>
           </SheetTrigger>
@@ -67,8 +67,8 @@ export function TopHeader() {
           </SheetContent>
         </Sheet>
 
-        {/* Get Started CTA */}
-        <Link to="/sessions">
+        {/* Get Started CTA - hidden on mobile */}
+        <Link to="/sessions" className="hidden md:block">
           <Button className="bg-primary hover:bg-primary/90 text-primary-foreground font-medium px-6 shadow-neon-orange">
             Get Started
           </Button>
