@@ -1,9 +1,11 @@
 import { useState } from "react";
-import { BookOpen, Sparkles, Scroll, Star, Loader2 } from "lucide-react";
+import { BookOpen, Sparkles, Scroll, Star, Loader2, Bookmark, Trash2, ChevronDown, ChevronUp } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { CornerFrame } from "@/components/ui/corner-frame";
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useToast } from "@/hooks/use-toast";
+import { useSavedStories, SavedStory } from "@/hooks/use-saved-stories";
 
 interface Story {
   id: string;
@@ -30,7 +32,18 @@ const SAMPLE_STORIES = [
 export default function Stories() {
   const [isGenerating, setIsGenerating] = useState(false);
   const [currentStory, setCurrentStory] = useState<Story | null>(null);
+  const [activeTab, setActiveTab] = useState<"all" | "favorites">("all");
+  const [expandedStoryId, setExpandedStoryId] = useState<string | null>(null);
   const { toast } = useToast();
+  const { 
+    savedStories, 
+    favorites, 
+    saveStory, 
+    removeStory, 
+    toggleFavorite, 
+    isStorySaved, 
+    isStoryFavorited 
+  } = useSavedStories();
 
   const handleGenerateStory = async () => {
     setIsGenerating(true);
@@ -54,6 +67,43 @@ export default function Stories() {
       description: `"${randomStory.title}" has been created for you.`
     });
   };
+
+  const handleSaveStory = () => {
+    if (!currentStory) return;
+    
+    if (isStorySaved(currentStory.id)) {
+      removeStory(currentStory.id);
+      toast({
+        title: "Story Removed",
+        description: "Story removed from your collection."
+      });
+    } else {
+      saveStory(currentStory);
+      toast({
+        title: "Story Saved",
+        description: "Story saved to your collection."
+      });
+    }
+  };
+
+  const handleToggleFavorite = (id: string) => {
+    toggleFavorite(id);
+    const isFavorited = isStoryFavorited(id);
+    toast({
+      title: isFavorited ? "Removed from Favorites" : "Added to Favorites",
+      description: isFavorited ? "Story removed from favorites." : "Story added to favorites."
+    });
+  };
+
+  const handleDeleteStory = (id: string) => {
+    removeStory(id);
+    toast({
+      title: "Story Deleted",
+      description: "Story removed from your collection."
+    });
+  };
+
+  const displayedStories = activeTab === "favorites" ? favorites : savedStories;
 
   return (
     <div className="animate-fade-in">
@@ -111,9 +161,24 @@ export default function Stories() {
                 <h3 className="font-display text-xl md:text-2xl font-bold text-foreground">
                   {currentStory.title}
                 </h3>
-                <Button variant="ghost" size="icon" className="shrink-0">
-                  <Star className="h-5 w-5" />
-                </Button>
+                <div className="flex gap-1 shrink-0">
+                  <Button 
+                    variant="ghost" 
+                    size="icon" 
+                    onClick={() => handleToggleFavorite(currentStory.id)}
+                    className={isStoryFavorited(currentStory.id) ? "text-primary" : "text-muted-foreground"}
+                  >
+                    <Star className={`h-5 w-5 ${isStoryFavorited(currentStory.id) ? "fill-current" : ""}`} />
+                  </Button>
+                  <Button 
+                    variant="ghost" 
+                    size="icon"
+                    onClick={handleSaveStory}
+                    className={isStorySaved(currentStory.id) ? "text-primary" : "text-muted-foreground"}
+                  >
+                    <Bookmark className={`h-5 w-5 ${isStorySaved(currentStory.id) ? "fill-current" : ""}`} />
+                  </Button>
+                </div>
               </div>
               <p className="text-foreground/90 leading-relaxed text-sm md:text-base">
                 {currentStory.content}
@@ -127,29 +192,136 @@ export default function Stories() {
 
         {/* Saved Stories Section */}
         <div className="space-y-4 md:space-y-6">
-          <h2 className="font-display text-xl md:text-2xl font-semibold">Saved Stories</h2>
+          <div className="flex items-center justify-between">
+            <h2 className="font-display text-xl md:text-2xl font-semibold">Saved Stories</h2>
+            {savedStories.length > 0 && (
+              <Tabs value={activeTab} onValueChange={(v) => setActiveTab(v as "all" | "favorites")}>
+                <TabsList className="h-9">
+                  <TabsTrigger value="all" className="text-xs px-3">
+                    All ({savedStories.length})
+                  </TabsTrigger>
+                  <TabsTrigger value="favorites" className="text-xs px-3">
+                    <Star className="h-3 w-3 mr-1 fill-current" />
+                    ({favorites.length})
+                  </TabsTrigger>
+                </TabsList>
+              </Tabs>
+            )}
+          </div>
           
-          <Card className="bg-card border-border/50">
-            <CardContent className="py-8 md:py-12 text-center">
-              <div className="space-y-4">
-                <div className="flex flex-col sm:flex-row justify-center gap-4 sm:gap-8 text-muted-foreground">
-                  <div className="flex items-center justify-center gap-2">
-                    <Scroll className="h-5 w-5" />
-                    <span>No stories saved</span>
+          {savedStories.length === 0 ? (
+            <Card className="bg-card border-border/50">
+              <CardContent className="py-8 md:py-12 text-center">
+                <div className="space-y-4">
+                  <div className="flex flex-col sm:flex-row justify-center gap-4 sm:gap-8 text-muted-foreground">
+                    <div className="flex items-center justify-center gap-2">
+                      <Scroll className="h-5 w-5" />
+                      <span>No stories saved</span>
+                    </div>
+                    <div className="flex items-center justify-center gap-2">
+                      <Star className="h-5 w-5" />
+                      <span>0 favorites</span>
+                    </div>
                   </div>
-                  <div className="flex items-center justify-center gap-2">
-                    <Star className="h-5 w-5" />
-                    <span>0 favorites</span>
-                  </div>
+                  <p className="text-muted-foreground text-sm md:text-base">
+                    Discover your first heritage story to learn from the masters
+                  </p>
                 </div>
-                <p className="text-muted-foreground text-sm md:text-base">
-                  Discover your first heritage story to learn from the masters
-                </p>
-              </div>
-            </CardContent>
-          </Card>
+              </CardContent>
+            </Card>
+          ) : displayedStories.length === 0 ? (
+            <Card className="bg-card border-border/50">
+              <CardContent className="py-8 md:py-12 text-center">
+                <div className="space-y-2">
+                  <Star className="h-8 w-8 mx-auto text-muted-foreground" />
+                  <p className="text-muted-foreground text-sm md:text-base">
+                    No favorite stories yet. Star a story to add it here.
+                  </p>
+                </div>
+              </CardContent>
+            </Card>
+          ) : (
+            <div className="space-y-3">
+              {displayedStories.map((story) => (
+                <SavedStoryCard
+                  key={story.id}
+                  story={story}
+                  isExpanded={expandedStoryId === story.id}
+                  onToggleExpand={() => setExpandedStoryId(expandedStoryId === story.id ? null : story.id)}
+                  onToggleFavorite={() => handleToggleFavorite(story.id)}
+                  onDelete={() => handleDeleteStory(story.id)}
+                />
+              ))}
+            </div>
+          )}
         </div>
       </div>
     </div>
+  );
+}
+
+interface SavedStoryCardProps {
+  story: SavedStory;
+  isExpanded: boolean;
+  onToggleExpand: () => void;
+  onToggleFavorite: () => void;
+  onDelete: () => void;
+}
+
+function SavedStoryCard({ story, isExpanded, onToggleExpand, onToggleFavorite, onDelete }: SavedStoryCardProps) {
+  const previewLength = 120;
+  const needsTruncation = story.content.length > previewLength;
+  const displayContent = isExpanded || !needsTruncation 
+    ? story.content 
+    : story.content.slice(0, previewLength) + "...";
+
+  return (
+    <Card className="bg-card border-border/50">
+      <CardContent className="p-4 md:p-5">
+        <div className="flex items-start justify-between gap-3">
+          <div className="flex-1 min-w-0">
+            <div className="flex items-center gap-2 mb-2">
+              <Button 
+                variant="ghost" 
+                size="icon" 
+                className={`h-6 w-6 ${story.isFavorite ? "text-primary" : "text-muted-foreground"}`}
+                onClick={onToggleFavorite}
+              >
+                <Star className={`h-4 w-4 ${story.isFavorite ? "fill-current" : ""}`} />
+              </Button>
+              <h4 className="font-display font-semibold text-foreground truncate">
+                {story.title}
+              </h4>
+            </div>
+            <p className="text-foreground/80 text-sm leading-relaxed mb-2">
+              {displayContent}
+            </p>
+            <p className="text-xs text-muted-foreground">
+              Saved {new Date(story.savedAt).toLocaleDateString()}
+            </p>
+          </div>
+          <div className="flex flex-col gap-1">
+            {needsTruncation && (
+              <Button 
+                variant="ghost" 
+                size="icon" 
+                className="h-8 w-8 text-muted-foreground"
+                onClick={onToggleExpand}
+              >
+                {isExpanded ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />}
+              </Button>
+            )}
+            <Button 
+              variant="ghost" 
+              size="icon" 
+              className="h-8 w-8 text-muted-foreground hover:text-destructive"
+              onClick={onDelete}
+            >
+              <Trash2 className="h-4 w-4" />
+            </Button>
+          </div>
+        </div>
+      </CardContent>
+    </Card>
   );
 }
