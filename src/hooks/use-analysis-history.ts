@@ -1,14 +1,28 @@
 import { useState, useEffect } from "react";
 
-export interface AnalysisResult {
-  id: string;
+export interface FrameAnalysis {
+  frameId: string;
+  timestamp: number;
+  label: string;
   thumbnail: string;
   overallScore: number;
   strengths: string[];
   improvements: string[];
   keyRecommendation: string;
   techniquesIdentified: string[];
+}
+
+export interface AnalysisResult {
+  id: string;
+  thumbnail: string;
+  mediaType: "image" | "video";
+  overallScore: number;
+  strengths: string[];
+  improvements: string[];
+  keyRecommendation: string;
+  techniquesIdentified: string[];
   analyzedAt: string;
+  frameAnalyses?: FrameAnalysis[];
 }
 
 const STORAGE_KEY = "archery-analysis-history";

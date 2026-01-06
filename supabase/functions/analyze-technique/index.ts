@@ -5,7 +5,14 @@ const corsHeaders = {
   "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
 };
 
-const systemPrompt = `You are an expert archery coach specializing in traditional Islamic archery techniques from classical manuscripts including "Arab Archery" (15th century Moroccan), "Saracen Archery" (1368 AD Mameluke), and Mamluk Furusiyah literature.
+const getSystemPrompt = (frameLabel?: string) => {
+  const phaseContext = frameLabel 
+    ? `You are analyzing the "${frameLabel}" phase of the archer's shooting sequence. Focus your analysis specifically on what should be happening during this phase.`
+    : "";
+
+  return `You are an expert archery coach specializing in traditional Islamic archery techniques from classical manuscripts including "Arab Archery" (15th century Moroccan), "Saracen Archery" (1368 AD Mameluke), and Mamluk Furusiyah literature.
+
+${phaseContext}
 
 Analyze the archer's form in this photo and provide detailed feedback based on these classical techniques:
 
@@ -38,6 +45,7 @@ You MUST respond with valid JSON in this exact format:
 }
 
 Be encouraging but specific. Reference the classical techniques by name. If you cannot clearly see the archer's form, still provide general guidance based on what is visible.`;
+};
 
 serve(async (req) => {
   if (req.method === "OPTIONS") {
@@ -45,7 +53,7 @@ serve(async (req) => {
   }
 
   try {
-    const { imageData } = await req.json();
+    const { imageData, frameLabel } = await req.json();
     
     if (!imageData) {
       console.error("No image data provided");
@@ -64,7 +72,7 @@ serve(async (req) => {
       );
     }
 
-    console.log("Sending image for analysis...");
+    console.log(`Analyzing archery form${frameLabel ? ` - Frame: ${frameLabel}` : ""}...`);
 
     const response = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
       method: "POST",
@@ -75,13 +83,15 @@ serve(async (req) => {
       body: JSON.stringify({
         model: "google/gemini-2.5-flash",
         messages: [
-          { role: "system", content: systemPrompt },
+          { role: "system", content: getSystemPrompt(frameLabel) },
           {
             role: "user",
             content: [
               {
                 type: "text",
-                text: "Please analyze this archery form photo and provide feedback based on classical Islamic archery techniques.",
+                text: frameLabel 
+                  ? `Analyze this "${frameLabel}" phase of the archer's form and provide feedback specific to this moment in the shot sequence.`
+                  : "Please analyze this archery form photo and provide feedback based on classical Islamic archery techniques.",
               },
               {
                 type: "image_url",
