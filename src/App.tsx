@@ -8,6 +8,7 @@ import Home from "@/pages/Home";
 import Sessions from "@/pages/Sessions";
 import Stories from "@/pages/Stories";
 import Library from "@/pages/Library";
+import ManuscriptDetail from "@/pages/ManuscriptDetail";
 import Analyze from "@/pages/Analyze";
 import Progress from "@/pages/Progress";
 import Equipment from "@/pages/Equipment";
@@ -29,6 +30,7 @@ const App = () => (
             <Route path="/sessions" element={<Sessions />} />
             <Route path="/stories" element={<Stories />} />
             <Route path="/library" element={<Library />} />
+            <Route path="/library/manuscript/:manuscriptId" element={<ManuscriptDetail />} />
             <Route path="/analyze" element={<Analyze />} />
             <Route path="/progress" element={<Progress />} />
             <Route path="/equipment" element={<Equipment />} />
