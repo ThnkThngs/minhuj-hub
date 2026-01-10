@@ -12,6 +12,7 @@ import {
 import { NavLink, Link } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import { menuLinks } from "@/config/navigation";
+import { UserMenu } from "@/components/auth/UserMenu";
 
 export function TopHeader() {
   const [isOpen, setIsOpen] = useState(false);
@@ -69,12 +70,13 @@ export function TopHeader() {
           </SheetContent>
         </Sheet>
 
-        {/* Get Started CTA - hidden on mobile */}
-        <Link to="/sessions" className="hidden md:block">
-          <Button className="bg-primary hover:bg-primary/90 text-primary-foreground font-medium px-6 shadow-neon-orange">
-            Get Started
-          </Button>
-        </Link>
+        {/* Spacer */}
+        <div className="flex-1" />
+
+        {/* User Menu */}
+        <div className="glass-dark p-1.5 rounded-full">
+          <UserMenu />
+        </div>
       </div>
     </header>
   );
