@@ -14,7 +14,168 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      analysis_history: {
+        Row: {
+          analyzed_at: string
+          frame_analyses: Json | null
+          id: string
+          improvements: string[] | null
+          key_recommendation: string | null
+          media_type: string | null
+          overall_score: number | null
+          strengths: string[] | null
+          techniques_identified: string[] | null
+          thumbnail: string | null
+          user_id: string
+        }
+        Insert: {
+          analyzed_at?: string
+          frame_analyses?: Json | null
+          id?: string
+          improvements?: string[] | null
+          key_recommendation?: string | null
+          media_type?: string | null
+          overall_score?: number | null
+          strengths?: string[] | null
+          techniques_identified?: string[] | null
+          thumbnail?: string | null
+          user_id: string
+        }
+        Update: {
+          analyzed_at?: string
+          frame_analyses?: Json | null
+          id?: string
+          improvements?: string[] | null
+          key_recommendation?: string | null
+          media_type?: string | null
+          overall_score?: number | null
+          strengths?: string[] | null
+          techniques_identified?: string[] | null
+          thumbnail?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
+      profiles: {
+        Row: {
+          avatar_url: string | null
+          created_at: string
+          display_name: string | null
+          id: string
+          skill_level: Database["public"]["Enums"]["skill_level"] | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          avatar_url?: string | null
+          created_at?: string
+          display_name?: string | null
+          id?: string
+          skill_level?: Database["public"]["Enums"]["skill_level"] | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          avatar_url?: string | null
+          created_at?: string
+          display_name?: string | null
+          id?: string
+          skill_level?: Database["public"]["Enums"]["skill_level"] | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      reading_progress: {
+        Row: {
+          created_at: string
+          id: string
+          last_chapter_id: string | null
+          last_read_at: string | null
+          manuscript_id: string
+          read_chapters: string[] | null
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          last_chapter_id?: string | null
+          last_read_at?: string | null
+          manuscript_id: string
+          read_chapters?: string[] | null
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          last_chapter_id?: string | null
+          last_read_at?: string | null
+          manuscript_id?: string
+          read_chapters?: string[] | null
+          user_id?: string
+        }
+        Relationships: []
+      }
+      technique_favorites: {
+        Row: {
+          favorited_at: string
+          id: string
+          technique_id: string
+          user_id: string
+        }
+        Insert: {
+          favorited_at?: string
+          id?: string
+          technique_id: string
+          user_id: string
+        }
+        Update: {
+          favorited_at?: string
+          id?: string
+          technique_id?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      training_sessions: {
+        Row: {
+          arrows_shot: number
+          created_at: string
+          duration_minutes: number
+          id: string
+          mood: Database["public"]["Enums"]["session_mood"] | null
+          notes: string | null
+          session_date: string
+          techniques_practiced: string[] | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          arrows_shot: number
+          created_at?: string
+          duration_minutes: number
+          id?: string
+          mood?: Database["public"]["Enums"]["session_mood"] | null
+          notes?: string | null
+          session_date: string
+          techniques_practiced?: string[] | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          arrows_shot?: number
+          created_at?: string
+          duration_minutes?: number
+          id?: string
+          mood?: Database["public"]["Enums"]["session_mood"] | null
+          notes?: string | null
+          session_date?: string
+          techniques_practiced?: string[] | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
@@ -23,7 +184,13 @@ export type Database = {
       [_ in never]: never
     }
     Enums: {
-      [_ in never]: never
+      session_mood:
+        | "focused"
+        | "struggling"
+        | "improving"
+        | "tired"
+        | "energized"
+      skill_level: "beginner" | "intermediate" | "advanced" | "master"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -150,6 +317,15 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      session_mood: [
+        "focused",
+        "struggling",
+        "improving",
+        "tired",
+        "energized",
+      ],
+      skill_level: ["beginner", "intermediate", "advanced", "master"],
+    },
   },
 } as const

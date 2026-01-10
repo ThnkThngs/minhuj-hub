@@ -1,14 +1,17 @@
 import { useState, useMemo } from "react";
 import { BookOpen, Sparkles } from "lucide-react";
-import { categories, techniques } from "@/config/library";
+import { categories, techniques, type Technique } from "@/config/library";
 import { TechniqueCard } from "@/components/library/TechniqueCard";
 import { CategoryFilter } from "@/components/library/CategoryFilter";
 import { SearchBar } from "@/components/library/SearchBar";
 import { ManuscriptsSection } from "@/components/library/ManuscriptsSection";
+import { TechniqueDetailDrawer } from "@/components/library/TechniqueDetailDrawer";
 
 export default function Library() {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+  const [selectedTechnique, setSelectedTechnique] = useState<Technique | null>(null);
+  const [drawerOpen, setDrawerOpen] = useState(false);
 
   const filteredTechniques = useMemo(() => {
     return techniques.filter((technique) => {
@@ -36,6 +39,11 @@ export default function Library() {
   const selectedCategoryData = selectedCategory
     ? categories.find((c) => c.id === selectedCategory)
     : null;
+
+  const handleTechniqueClick = (technique: Technique) => {
+    setSelectedTechnique(technique);
+    setDrawerOpen(true);
+  };
 
   return (
     <div className="animate-fade-in">
@@ -116,7 +124,11 @@ export default function Library() {
           {filteredTechniques.length > 0 ? (
             <div className="grid md:grid-cols-2 gap-4">
               {filteredTechniques.map((technique) => (
-                <TechniqueCard key={technique.id} technique={technique} />
+                <TechniqueCard
+                  key={technique.id}
+                  technique={technique}
+                  onClick={() => handleTechniqueClick(technique)}
+                />
               ))}
             </div>
           ) : (
@@ -145,6 +157,13 @@ export default function Library() {
           <ManuscriptsSection />
         </div>
       </div>
+
+      {/* Technique Detail Drawer */}
+      <TechniqueDetailDrawer
+        technique={selectedTechnique}
+        open={drawerOpen}
+        onOpenChange={setDrawerOpen}
+      />
     </div>
   );
 }
