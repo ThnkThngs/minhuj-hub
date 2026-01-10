@@ -42,15 +42,15 @@ export const quickActions: QuickAction[] = [
   {
     to: "/sessions",
     icon: Target,
-    label: "New Session",
-    description: "AI-generated training plans based on classical manuscripts",
+    label: "Progress Tracking",
+    description: "Track sessions, scores, and earn ranks with XP badges featuring Islamic geometric patterns.",
     accent: "accent",
   },
   {
     to: "/analyze",
     icon: Crosshair,
-    label: "Analyze",
-    description: "Upload your form for AI technique analysis",
+    label: "AI Coaching",
+    description: "Deep Thinking mode analyzes your form using classical manuscripts for historically-accurate guidance.",
     accent: "primary",
   },
   {
@@ -63,8 +63,8 @@ export const quickActions: QuickAction[] = [
   {
     to: "/library",
     icon: Library,
-    label: "Library",
-    description: "Browse classical archery manuscripts",
+    label: "Classical Manuscripts",
+    description: "Access 'Arab Archery', 'Saracen Archery', and Mamluk Furusiyah literature as your knowledge base.",
     accent: "primary",
   },
 ];
