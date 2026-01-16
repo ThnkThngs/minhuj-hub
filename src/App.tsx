@@ -16,6 +16,7 @@ import Equipment from "@/pages/Equipment";
 import Community from "@/pages/Community";
 import Credits from "@/pages/Credits";
 import Auth from "@/pages/Auth";
+import Affirmations from "@/pages/Affirmations";
 import NotFound from "@/pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -40,6 +41,7 @@ const App = () => (
               <Route path="/community" element={<Community />} />
               <Route path="/credits" element={<Credits />} />
               <Route path="/auth" element={<Auth />} />
+              <Route path="/affirmations" element={<Affirmations />} />
             </Route>
             <Route path="*" element={<NotFound />} />
           </Routes>
