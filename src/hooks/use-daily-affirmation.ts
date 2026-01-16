@@ -119,5 +119,6 @@ export function useDailyAffirmation() {
     popupEnabled,
     togglePopupEnabled,
     shouldShowPopup,
+    savedAffirmations,
   };
 }
