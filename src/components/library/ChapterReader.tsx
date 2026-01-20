@@ -2,6 +2,7 @@ import { Chapter } from "@/config/manuscripts";
 import { Button } from "@/components/ui/button";
 import { ChevronLeft, ChevronRight, CheckCircle2, Circle } from "lucide-react";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { useRef, useCallback, useEffect } from "react";
 
 interface ChapterReaderProps {
   chapter: Chapter;
@@ -12,6 +13,8 @@ interface ChapterReaderProps {
   hasNext: boolean;
   isRead: boolean;
   onMarkRead: () => void;
+  initialScrollPosition?: number;
+  onScrollPositionChange?: (position: number) => void;
 }
 
 export function ChapterReader({
@@ -23,7 +26,42 @@ export function ChapterReader({
   hasNext,
   isRead,
   onMarkRead,
+  initialScrollPosition = 0,
+  onScrollPositionChange,
 }: ChapterReaderProps) {
+  const scrollRef = useRef<HTMLDivElement>(null);
+  const debounceRef = useRef<NodeJS.Timeout | null>(null);
+
+  // Restore scroll position on mount or chapter change
+  useEffect(() => {
+    if (scrollRef.current && initialScrollPosition > 0) {
+      const viewport = scrollRef.current.querySelector('[data-radix-scroll-area-viewport]');
+      if (viewport) {
+        const scrollHeight = viewport.scrollHeight - viewport.clientHeight;
+        const targetScroll = (initialScrollPosition / 100) * scrollHeight;
+        viewport.scrollTop = targetScroll;
+      }
+    }
+  }, [chapter.id, initialScrollPosition]);
+
+  // Handle scroll with debounce
+  const handleScroll = useCallback((event: React.UIEvent<HTMLDivElement>) => {
+    if (!onScrollPositionChange) return;
+
+    const target = event.currentTarget.querySelector('[data-radix-scroll-area-viewport]');
+    if (!target) return;
+
+    if (debounceRef.current) {
+      clearTimeout(debounceRef.current);
+    }
+
+    debounceRef.current = setTimeout(() => {
+      const scrollHeight = target.scrollHeight - target.clientHeight;
+      const scrollPercent = scrollHeight > 0 ? Math.round((target.scrollTop / scrollHeight) * 100) : 0;
+      onScrollPositionChange(scrollPercent);
+    }, 2000); // Save every 2 seconds of no scrolling
+  }, [onScrollPositionChange]);
+
   return (
     <div className="flex flex-col h-full">
       {/* Chapter Header */}
@@ -44,7 +82,11 @@ export function ChapterReader({
       </div>
 
       {/* Chapter Content */}
-      <ScrollArea className="flex-1 pr-4">
+      <ScrollArea 
+        ref={scrollRef}
+        className="flex-1 pr-4"
+        onScrollCapture={handleScroll}
+      >
         <div className="prose prose-invert max-w-none">
           {chapter.content.split("\n\n").map((paragraph, index) => (
             <p

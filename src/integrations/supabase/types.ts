@@ -92,6 +92,7 @@ export type Database = {
           id: string
           last_chapter_id: string | null
           last_read_at: string | null
+          last_scroll_position: number | null
           manuscript_id: string
           read_chapters: string[] | null
           user_id: string
@@ -101,6 +102,7 @@ export type Database = {
           id?: string
           last_chapter_id?: string | null
           last_read_at?: string | null
+          last_scroll_position?: number | null
           manuscript_id: string
           read_chapters?: string[] | null
           user_id: string
@@ -110,6 +112,7 @@ export type Database = {
           id?: string
           last_chapter_id?: string | null
           last_read_at?: string | null
+          last_scroll_position?: number | null
           manuscript_id?: string
           read_chapters?: string[] | null
           user_id?: string
