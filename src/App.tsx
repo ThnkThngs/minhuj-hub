@@ -17,6 +17,8 @@ import Community from "@/pages/Community";
 import Credits from "@/pages/Credits";
 import Auth from "@/pages/Auth";
 import Affirmations from "@/pages/Affirmations";
+import Reading from "@/pages/Reading";
+import Settings from "@/pages/Settings";
 import NotFound from "@/pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -35,11 +37,13 @@ const App = () => (
               <Route path="/stories" element={<Stories />} />
               <Route path="/library" element={<Library />} />
               <Route path="/library/manuscript/:manuscriptId" element={<ManuscriptDetail />} />
+              <Route path="/reading" element={<Reading />} />
               <Route path="/analyze" element={<Analyze />} />
               <Route path="/progress" element={<Progress />} />
               <Route path="/equipment" element={<Equipment />} />
               <Route path="/community" element={<Community />} />
               <Route path="/credits" element={<Credits />} />
+              <Route path="/settings" element={<Settings />} />
               <Route path="/auth" element={<Auth />} />
               <Route path="/affirmations" element={<Affirmations />} />
             </Route>

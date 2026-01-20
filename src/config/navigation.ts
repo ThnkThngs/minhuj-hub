@@ -1,4 +1,4 @@
-import { Home, Target, BookOpen, TrendingUp, Users, Crosshair, Library } from "lucide-react";
+import { Home, Target, BookOpen, TrendingUp, Users, Crosshair, Library, Settings } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 
 export interface NavItem {
@@ -10,6 +10,7 @@ export interface NavItem {
 // Full menu for sidebar/hamburger menu
 export const menuLinks: NavItem[] = [
   { to: "/", label: "Home" },
+  { to: "/reading", label: "Reading Hub" },
   { to: "/sessions", label: "Sessions" },
   { to: "/stories", label: "Heritage Stories" },
   { to: "/library", label: "Classical Library" },
@@ -17,14 +18,15 @@ export const menuLinks: NavItem[] = [
   { to: "/progress", label: "My Progress" },
   { to: "/equipment", label: "Equipment" },
   { to: "/community", label: "Community" },
+  { to: "/settings", label: "Settings" },
   { to: "/credits", label: "Credits" },
 ];
 
 // Bottom nav items for mobile
 export const bottomNavItems: NavItem[] = [
   { to: "/", icon: Home, label: "Home" },
+  { to: "/reading", icon: BookOpen, label: "Reading" },
   { to: "/sessions", icon: Target, label: "Sessions" },
-  { to: "/stories", icon: BookOpen, label: "Stories" },
   { to: "/progress", icon: TrendingUp, label: "Progress" },
   { to: "/community", icon: Users, label: "Community" },
 ];
