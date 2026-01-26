@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, useSearchParams } from "react-router-dom";
 import { ArrowLeft, BookOpen, Menu } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
@@ -12,6 +12,7 @@ import { useReadingProgress } from "@/hooks/use-reading-progress";
 export default function ManuscriptDetail() {
   const { manuscriptId } = useParams<{ manuscriptId: string }>();
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   const manuscript = manuscriptId ? getManuscriptById(manuscriptId) : undefined;
@@ -20,16 +21,16 @@ export default function ManuscriptDetail() {
 
   const [activeChapterId, setActiveChapterId] = useState<string>("");
 
-  // Set initial chapter
+  // Set initial chapter from URL param, last read, or first chapter
   useEffect(() => {
     if (manuscript && !activeChapterId) {
-      // Resume from last read chapter or start at first
-      const initialChapter = lastChapterId || manuscript.chapters[0]?.id;
+      const chapterFromUrl = searchParams.get('chapter');
+      const initialChapter = chapterFromUrl || lastChapterId || manuscript.chapters[0]?.id;
       if (initialChapter) {
         setActiveChapterId(initialChapter);
       }
     }
-  }, [manuscript, activeChapterId, lastChapterId]);
+  }, [manuscript, activeChapterId, lastChapterId, searchParams]);
 
   if (!manuscript) {
     return (

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { ChevronDown, ChevronRight, ExternalLink } from "lucide-react";
+import { ChevronDown, ChevronRight, BookOpen } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";
@@ -69,12 +69,26 @@ export function ExpandableManuscriptCard({ manuscript }: ExpandableManuscriptCar
             )}>
               {manuscript.title}
             </h3>
-            <ChevronDown 
-              className={cn(
-                "h-4 w-4 text-muted-foreground transition-transform duration-200 flex-shrink-0 mt-0.5",
-                isExpanded && "rotate-180 text-accent"
-              )} 
-            />
+            <div className="flex items-center gap-2 flex-shrink-0">
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  navigate(`/library/manuscript/${manuscript.id}`);
+                }}
+                className="text-xs gap-1.5 h-7 px-2"
+              >
+                <BookOpen className="h-3 w-3" />
+                Read
+              </Button>
+              <ChevronDown 
+                className={cn(
+                  "h-4 w-4 text-muted-foreground transition-transform duration-200 mt-0.5",
+                  isExpanded && "rotate-180 text-accent"
+                )} 
+              />
+            </div>
           </div>
           <p className="text-xs text-muted-foreground line-clamp-1">
             {manuscript.subtitle}
@@ -129,6 +143,7 @@ export function ExpandableManuscriptCard({ manuscript }: ExpandableManuscriptCar
                   <ExpandableChapterItem
                     key={chapter.id}
                     chapter={chapter}
+                    manuscriptId={manuscript.id}
                     isRead={isChapterRead(chapter.id)}
                     onMarkRead={() => markChapterRead(chapter.id)}
                   />
@@ -138,16 +153,17 @@ export function ExpandableManuscriptCard({ manuscript }: ExpandableManuscriptCar
               {/* Footer with link to full reader */}
               <div className="p-3 border-t border-border/20 bg-secondary/5">
                 <Button
-                  variant="ghost"
+                  variant="outline"
                   size="sm"
                   onClick={(e) => {
                     e.stopPropagation();
                     navigate(`/library/manuscript/${manuscript.id}`);
                   }}
-                  className="w-full text-xs text-muted-foreground hover:text-accent group"
+                  className="w-full text-xs gap-2 group"
                 >
+                  <BookOpen className="h-3 w-3" />
                   <span>Open Full Manuscript Reader</span>
-                  <ChevronRight className="h-3 w-3 ml-1 group-hover:translate-x-0.5 transition-transform" />
+                  <ChevronRight className="h-3 w-3 group-hover:translate-x-0.5 transition-transform" />
                 </Button>
               </div>
             </div>

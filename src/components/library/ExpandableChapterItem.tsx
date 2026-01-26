@@ -1,5 +1,6 @@
 import { useState } from "react";
-import { ChevronDown, Check, BookOpen } from "lucide-react";
+import { ChevronDown, ChevronRight, Check, BookOpen } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -17,16 +18,19 @@ interface Chapter {
 
 interface ExpandableChapterItemProps {
   chapter: Chapter;
+  manuscriptId: string;
   isRead: boolean;
   onMarkRead: () => void;
 }
 
 export function ExpandableChapterItem({ 
   chapter, 
+  manuscriptId,
   isRead, 
   onMarkRead 
 }: ExpandableChapterItemProps) {
   const [isExpanded, setIsExpanded] = useState(false);
+  const navigate = useNavigate();
 
   return (
     <div className="border-b border-border/20 last:border-b-0">
@@ -63,6 +67,18 @@ export function ExpandableChapterItem({
               Read
             </Badge>
           )}
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={(e) => {
+              e.stopPropagation();
+              navigate(`/library/manuscript/${manuscriptId}?chapter=${chapter.id}`);
+            }}
+            className="text-xs gap-1 h-7 px-2"
+          >
+            Read
+            <ChevronRight className="h-3 w-3" />
+          </Button>
           <ChevronDown 
             className={cn(
               "h-4 w-4 text-muted-foreground transition-transform duration-200",
