@@ -1,11 +1,12 @@
 import { useState } from "react";
-import { BookOpen, Sparkles, Scroll, Star, Loader2, Bookmark, Trash2, ChevronDown, ChevronUp, Share2 } from "lucide-react";
+import { BookOpen, Sparkles, Scroll, Star, Loader2, Bookmark, Trash2, ChevronDown, ChevronUp, Share2, Swords, Target, TreePine, Trophy } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { CornerFrame } from "@/components/ui/corner-frame";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useToast } from "@/hooks/use-toast";
 import { useSavedStories, SavedStory } from "@/hooks/use-saved-stories";
+import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 
 interface Story {
   id: string;
@@ -13,6 +14,14 @@ interface Story {
   content: string;
   createdAt: Date;
 }
+
+const THEMES = [
+  { id: "battles", label: "Battles", icon: Swords },
+  { id: "training", label: "Training", icon: Target },
+  { id: "wisdom", label: "Wisdom", icon: BookOpen },
+  { id: "hunting", label: "Hunting", icon: TreePine },
+  { id: "competitions", label: "Contests", icon: Trophy },
+] as const;
 
 const SAMPLE_STORIES = [
   {
@@ -32,6 +41,7 @@ const SAMPLE_STORIES = [
 export default function Stories() {
   const [isGenerating, setIsGenerating] = useState(false);
   const [currentStory, setCurrentStory] = useState<Story | null>(null);
+  const [selectedTheme, setSelectedTheme] = useState<string>("");
   const [activeTab, setActiveTab] = useState<"all" | "favorites">("all");
   const [expandedStoryId, setExpandedStoryId] = useState<string | null>(null);
   const { toast } = useToast();
@@ -48,23 +58,79 @@ export default function Stories() {
   const handleGenerateStory = async () => {
     setIsGenerating(true);
     
-    // Simulate story generation
-    await new Promise(resolve => setTimeout(resolve, 2000));
-    
+    try {
+      const response = await fetch(
+        `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/generate-story`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY}`,
+          },
+          body: JSON.stringify({ theme: selectedTheme || undefined }),
+        }
+      );
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        
+        if (response.status === 429) {
+          toast({
+            title: "Please Wait",
+            description: "Too many requests. Please try again in a moment.",
+            variant: "destructive",
+          });
+          // Fallback to sample story
+          useFallbackStory();
+          return;
+        }
+        
+        if (response.status === 402) {
+          toast({
+            title: "Credits Depleted",
+            description: "AI credits are temporarily exhausted. Using a classic story instead.",
+            variant: "destructive",
+          });
+          useFallbackStory();
+          return;
+        }
+        
+        throw new Error(errorData.error || "Failed to generate story");
+      }
+
+      const data = await response.json();
+      
+      setCurrentStory({
+        id: Date.now().toString(),
+        title: data.title,
+        content: data.content,
+        createdAt: new Date(),
+      });
+      
+      toast({
+        title: "Story Generated",
+        description: `"${data.title}" has been created for you.`,
+      });
+    } catch (error) {
+      console.error("Story generation error:", error);
+      toast({
+        title: "Generation Failed",
+        description: "Using a classic story instead. Please try again later.",
+        variant: "destructive",
+      });
+      useFallbackStory();
+    } finally {
+      setIsGenerating(false);
+    }
+  };
+
+  const useFallbackStory = () => {
     const randomStory = SAMPLE_STORIES[Math.floor(Math.random() * SAMPLE_STORIES.length)];
-    
     setCurrentStory({
       id: Date.now().toString(),
       title: randomStory.title,
       content: randomStory.content,
-      createdAt: new Date()
-    });
-    
-    setIsGenerating(false);
-    
-    toast({
-      title: "Story Generated",
-      description: `"${randomStory.title}" has been created for you.`
+      createdAt: new Date(),
     });
   };
 
@@ -150,9 +216,36 @@ export default function Stories() {
                 Discover a Story
               </h2>
               <p className="text-muted-foreground max-w-md mx-auto text-sm md:text-base">
-                Stories about the Sahaba and the rich tradition of Islamic archery through the ages
+                AI-generated stories about the Sahaba and the rich tradition of Islamic archery
               </p>
             </div>
+
+            {/* Theme Selector */}
+            <div className="space-y-3">
+              <p className="text-sm text-muted-foreground">Choose a theme (optional):</p>
+              <ToggleGroup
+                type="single"
+                value={selectedTheme}
+                onValueChange={(value) => setSelectedTheme(value)}
+                className="flex flex-wrap justify-center gap-2"
+              >
+                {THEMES.map((theme) => {
+                  const Icon = theme.icon;
+                  return (
+                    <ToggleGroupItem
+                      key={theme.id}
+                      value={theme.id}
+                      aria-label={theme.label}
+                      className="flex items-center gap-1.5 px-3 py-2 data-[state=on]:bg-primary data-[state=on]:text-primary-foreground"
+                    >
+                      <Icon className="h-4 w-4" />
+                      <span className="text-sm">{theme.label}</span>
+                    </ToggleGroupItem>
+                  );
+                })}
+              </ToggleGroup>
+            </div>
+
             <Button 
               size="lg" 
               className="bg-primary hover:bg-primary/90 text-primary-foreground font-semibold px-6 md:px-8"
