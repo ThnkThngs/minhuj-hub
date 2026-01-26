@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { BookOpen, Sparkles, Scroll, Star, Loader2, Bookmark, Trash2, ChevronDown, ChevronUp } from "lucide-react";
+import { BookOpen, Sparkles, Scroll, Star, Loader2, Bookmark, Trash2, ChevronDown, ChevronUp, Share2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { CornerFrame } from "@/components/ui/corner-frame";
@@ -103,6 +103,27 @@ export default function Stories() {
     });
   };
 
+  const handleShareStory = async (story: Story | SavedStory) => {
+    const shareText = `${story.title}\n\n${story.content}`;
+    
+    if (navigator.share) {
+      try {
+        await navigator.share({
+          title: story.title,
+          text: shareText,
+        });
+      } catch (e) {
+        // User cancelled or error - silently fail
+      }
+    } else {
+      await navigator.clipboard.writeText(shareText);
+      toast({
+        title: "Copied to clipboard",
+        description: "The story has been copied to your clipboard.",
+      });
+    }
+  };
+
   const displayedStories = activeTab === "favorites" ? favorites : savedStories;
 
   return (
@@ -178,6 +199,14 @@ export default function Stories() {
                   >
                     <Bookmark className={`h-5 w-5 ${isStorySaved(currentStory.id) ? "fill-current" : ""}`} />
                   </Button>
+                  <Button 
+                    variant="ghost" 
+                    size="icon"
+                    onClick={() => handleShareStory(currentStory)}
+                    className="text-muted-foreground"
+                  >
+                    <Share2 className="h-5 w-5" />
+                  </Button>
                 </div>
               </div>
               <p className="text-foreground/90 leading-relaxed text-sm md:text-base">
@@ -249,6 +278,7 @@ export default function Stories() {
                   isExpanded={expandedStoryId === story.id}
                   onToggleExpand={() => setExpandedStoryId(expandedStoryId === story.id ? null : story.id)}
                   onToggleFavorite={() => handleToggleFavorite(story.id)}
+                  onShare={() => handleShareStory(story)}
                   onDelete={() => handleDeleteStory(story.id)}
                 />
               ))}
@@ -265,10 +295,11 @@ interface SavedStoryCardProps {
   isExpanded: boolean;
   onToggleExpand: () => void;
   onToggleFavorite: () => void;
+  onShare: () => void;
   onDelete: () => void;
 }
 
-function SavedStoryCard({ story, isExpanded, onToggleExpand, onToggleFavorite, onDelete }: SavedStoryCardProps) {
+function SavedStoryCard({ story, isExpanded, onToggleExpand, onToggleFavorite, onShare, onDelete }: SavedStoryCardProps) {
   const previewLength = 120;
   const needsTruncation = story.content.length > previewLength;
   const displayContent = isExpanded || !needsTruncation 
@@ -311,6 +342,14 @@ function SavedStoryCard({ story, isExpanded, onToggleExpand, onToggleFavorite, o
                 {isExpanded ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />}
               </Button>
             )}
+            <Button 
+              variant="ghost" 
+              size="icon" 
+              className="h-8 w-8 text-muted-foreground"
+              onClick={onShare}
+            >
+              <Share2 className="h-4 w-4" />
+            </Button>
             <Button 
               variant="ghost" 
               size="icon" 
