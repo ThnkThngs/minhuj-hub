@@ -6,6 +6,7 @@ import { CategoryFilter } from "@/components/library/CategoryFilter";
 import { SearchBar } from "@/components/library/SearchBar";
 import { ManuscriptsSection } from "@/components/library/ManuscriptsSection";
 import { TechniqueDetailDrawer } from "@/components/library/TechniqueDetailDrawer";
+import { RecentlyRead } from "@/components/library/RecentlyRead";
 
 export default function Library() {
   const [searchQuery, setSearchQuery] = useState("");
@@ -82,6 +83,9 @@ export default function Library() {
             </span>
           </div>
         </div>
+
+        {/* Recently Read */}
+        <RecentlyRead />
 
         {/* Search and Filters */}
         <div className="space-y-4">
