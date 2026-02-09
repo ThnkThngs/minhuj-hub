@@ -9,6 +9,7 @@ import { useAnalysisHistory, AnalysisResult, FrameAnalysis } from "@/hooks/use-a
 import { FrameTimeline, ExtractedFrame } from "@/components/analyze/FrameTimeline";
 import { FrameAnalysisView } from "@/components/analyze/FrameAnalysisView";
 import { ScoreProgressionChart } from "@/components/analyze/ScoreProgressionChart";
+import { CoachingSidebar } from "@/components/analyze/CoachingSidebar";
 
 interface AnalysisResponse {
   overallScore: number;
@@ -350,6 +351,9 @@ export default function Analyze() {
             AI-powered form analysis for traditional archery
           </p>
         </div>
+
+        <div className="grid lg:grid-cols-[1fr_280px] gap-6 items-start">
+        <div className="space-y-6 md:space-y-8">
 
         {/* Hidden file input */}
         <input
@@ -753,6 +757,18 @@ export default function Analyze() {
               ))}
             </div>
           )}
+        </div>
+        </div>
+
+          {/* Coaching Sidebar - visible on lg+ */}
+          <div className="hidden lg:block sticky top-20">
+            <CoachingSidebar />
+          </div>
+        </div>
+
+        {/* Coaching info on mobile - below main content */}
+        <div className="lg:hidden">
+          <CoachingSidebar />
         </div>
       </div>
     </div>
