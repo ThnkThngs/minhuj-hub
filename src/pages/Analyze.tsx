@@ -339,6 +339,30 @@ export default function Analyze() {
 
   const selectedFrame = extractedFrames[selectedFrameIndex];
 
+  // Derive active analysis data for the coaching sidebar
+  const activeAnalysisData = (() => {
+    // Image analysis result
+    if (currentResult) {
+      return {
+        overallScore: currentResult.overallScore,
+        strengths: currentResult.strengths || [],
+        improvements: currentResult.improvements || [],
+        keyRecommendation: currentResult.keyRecommendation || "",
+      };
+    }
+    // Video: use currently selected frame's analysis
+    if (selectedFrame && frameAnalyses[selectedFrame.id]) {
+      const fa = frameAnalyses[selectedFrame.id];
+      return {
+        overallScore: fa.overallScore,
+        strengths: fa.strengths,
+        improvements: fa.improvements,
+        keyRecommendation: fa.keyRecommendation,
+      };
+    }
+    return null;
+  })();
+
   return (
     <div className="animate-fade-in">
       <div className="container py-6 md:py-12 space-y-6 md:space-y-8">
@@ -762,13 +786,13 @@ export default function Analyze() {
 
           {/* Coaching Sidebar - visible on lg+ */}
           <div className="hidden lg:block sticky top-20">
-            <CoachingSidebar />
+            <CoachingSidebar analysisData={activeAnalysisData} />
           </div>
         </div>
 
         {/* Coaching info on mobile - below main content */}
         <div className="lg:hidden">
-          <CoachingSidebar />
+          <CoachingSidebar analysisData={activeAnalysisData} />
         </div>
       </div>
     </div>

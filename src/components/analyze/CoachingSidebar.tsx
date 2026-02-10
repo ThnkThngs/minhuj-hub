@@ -1,11 +1,23 @@
-import { Target, AlertTriangle, Sparkles } from "lucide-react";
+import { Target, AlertTriangle, Sparkles, TrendingUp, TrendingDown, Lightbulb } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+
+interface AnalysisData {
+  overallScore: number;
+  strengths: string[];
+  improvements: string[];
+  keyRecommendation: string;
+}
+
+interface CoachingSidebarProps {
+  analysisData?: AnalysisData | null;
+}
 
 const checkpoints = [
-  { label: "Bow Arm", detail: "Should be straight (170-180°)" },
-  { label: "Draw Elbow", detail: "Should be level or high (150-160°)" },
-  { label: "Shoulders", detail: "Aligned, not hunched (85-95°)" },
-  { label: "Anchor Point", detail: "Consistent position at jaw/cheek" },
+  { label: "Bow Arm", detail: "Should be straight (170-180°)", keywords: ["bow arm", "arm", "elbow"] },
+  { label: "Draw Elbow", detail: "Should be level or high (150-160°)", keywords: ["draw", "elbow", "pull"] },
+  { label: "Shoulders", detail: "Aligned, not hunched (85-95°)", keywords: ["shoulder", "alignment", "posture"] },
+  { label: "Anchor Point", detail: "Consistent position at jaw/cheek", keywords: ["anchor", "jaw", "cheek", "face"] },
 ];
 
 const safetyTips = [
@@ -15,9 +27,64 @@ const safetyTips = [
   "Inconsistent anchor increases facial injury risk",
 ];
 
-export function CoachingSidebar() {
+function matchesCheckpoint(text: string, keywords: string[]): boolean {
+  const lower = text.toLowerCase();
+  return keywords.some((k) => lower.includes(k));
+}
+
+export function CoachingSidebar({ analysisData }: CoachingSidebarProps) {
+  const hasResults = !!analysisData;
+
+  // Determine which checkpoints are strengths vs need improvement
+  const checkpointStatus = checkpoints.map((cp) => {
+    if (!hasResults) return { ...cp, status: "neutral" as const };
+    const isStrength = analysisData.strengths.some((s) => matchesCheckpoint(s, cp.keywords));
+    const needsWork = analysisData.improvements.some((s) => matchesCheckpoint(s, cp.keywords));
+    return {
+      ...cp,
+      status: isStrength ? ("good" as const) : needsWork ? ("improve" as const) : ("neutral" as const),
+    };
+  });
+
+  const scoreColor =
+    !hasResults ? "text-muted-foreground" :
+    analysisData.overallScore >= 8 ? "text-green-400" :
+    analysisData.overallScore >= 6 ? "text-amber-400" : "text-red-400";
+
   return (
     <div className="space-y-4">
+      {/* Dynamic Score + Recommendation */}
+      {hasResults && (
+        <Card className="bg-primary/5 border-primary/20">
+          <CardContent className="p-4 space-y-3">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <Lightbulb className="h-4 w-4 text-primary" />
+                <h3 className="font-display text-sm font-bold">AI Coaching</h3>
+              </div>
+              <span className={`text-2xl font-bold ${scoreColor}`}>
+                {analysisData.overallScore.toFixed(1)}
+              </span>
+            </div>
+            <p className="text-xs text-foreground/80 leading-relaxed">
+              {analysisData.keyRecommendation}
+            </p>
+            {analysisData.improvements.length > 0 && (
+              <div className="space-y-1.5 pt-1">
+                <p className="text-[10px] uppercase tracking-wider text-muted-foreground font-semibold">Focus Areas</p>
+                <div className="flex flex-wrap gap-1.5">
+                  {analysisData.improvements.slice(0, 3).map((imp, i) => (
+                    <Badge key={i} variant="outline" className="text-[10px] border-amber-400/30 text-amber-400">
+                      {imp.length > 30 ? imp.substring(0, 30) + "…" : imp}
+                    </Badge>
+                  ))}
+                </div>
+              </div>
+            )}
+          </CardContent>
+        </Card>
+      )}
+
       {/* Key Checkpoints */}
       <Card className="bg-card border-border/50">
         <CardContent className="p-4 space-y-3">
@@ -26,11 +93,21 @@ export function CoachingSidebar() {
             <h3 className="font-display text-sm font-bold">Key Checkpoints</h3>
           </div>
           <div className="space-y-2.5">
-            {checkpoints.map((cp) => (
+            {checkpointStatus.map((cp) => (
               <div key={cp.label} className="flex items-start gap-2.5">
-                <div className="w-1.5 h-1.5 rounded-full bg-primary mt-1.5 shrink-0" />
-                <div>
-                  <p className="text-sm font-medium">{cp.label}</p>
+                <div
+                  className={`w-1.5 h-1.5 rounded-full mt-1.5 shrink-0 ${
+                    cp.status === "good" ? "bg-green-400" :
+                    cp.status === "improve" ? "bg-amber-400" :
+                    "bg-primary"
+                  }`}
+                />
+                <div className="flex-1">
+                  <div className="flex items-center gap-1.5">
+                    <p className="text-sm font-medium">{cp.label}</p>
+                    {cp.status === "good" && <TrendingUp className="h-3 w-3 text-green-400" />}
+                    {cp.status === "improve" && <TrendingDown className="h-3 w-3 text-amber-400" />}
+                  </div>
                   <p className="text-xs text-muted-foreground">{cp.detail}</p>
                 </div>
               </div>
