@@ -12,9 +12,7 @@ export function TopHeader() {
       <div className="flex items-center gap-2 px-3 md:px-6 py-3 md:py-4">
         {/* Logo box */}
         <div className="glass-dark px-3 py-1.5 md:px-4 md:py-2 flex items-center gap-2 md:gap-3">
-          <div className="w-7 h-7 md:w-8 md:h-8 rounded-full bg-primary flex items-center justify-center">
-            <span className="font-display text-primary-foreground text-xs md:text-sm font-bold">ق</span>
-          </div>
+          <img src="/favicon.png" alt="Minhaj-Hub logo" className="w-7 h-7 md:w-8 md:h-8 rounded-full" />
           <div>
             <h1 className="font-display text-base md:text-lg font-bold tracking-wide leading-none">Minhaj-Hub</h1>
             <p className="text-[9px] md:text-[10px] text-muted-foreground tracking-wider">Archery Academy</p>
