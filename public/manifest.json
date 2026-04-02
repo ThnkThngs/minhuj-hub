@@ -1,7 +1,7 @@
 {
-  "name": "Al-Qaws Archery Coach",
-  "short_name": "Al-Qaws",
-  "description": "Master traditional Islamic archery with AI-powered coaching",
+  "name": "Minhaj-Hub Archery Academy",
+  "short_name": "Minhaj-Hub",
+  "description": "AI-powered archery academy — analyze your shooting form with classical traditional techniques",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#f5f0e8",
@@ -9,9 +9,9 @@
   "orientation": "portrait-primary",
   "icons": [
     {
-      "src": "/favicon.ico",
-      "sizes": "64x64",
-      "type": "image/x-icon"
+      "src": "/favicon.png",
+      "sizes": "512x512",
+      "type": "image/png"
     }
   ],
   "categories": ["sports", "education", "lifestyle"]
