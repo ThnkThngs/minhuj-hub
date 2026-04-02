@@ -30,7 +30,7 @@ export function ChapterReader({
   onScrollPositionChange,
 }: ChapterReaderProps) {
   const scrollRef = useRef<HTMLDivElement>(null);
-  const debounceRef = useRef<NodeJS.Timeout | null>(null);
+  const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   // Restore scroll position on mount or chapter change
   useEffect(() => {
