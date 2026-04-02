@@ -1,4 +1,5 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
+import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -53,10 +54,32 @@ serve(async (req) => {
   }
 
   try {
+    // Authenticate the user
+    const authHeader = req.headers.get("Authorization");
+    if (!authHeader) {
+      return new Response(
+        JSON.stringify({ error: "Authentication required" }),
+        { status: 401, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+      );
+    }
+
+    const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
+    const supabaseAnonKey = Deno.env.get("SUPABASE_ANON_KEY")!;
+    const supabase = createClient(supabaseUrl, supabaseAnonKey, {
+      global: { headers: { Authorization: authHeader } },
+    });
+
+    const { data: { user }, error: authError } = await supabase.auth.getUser();
+    if (authError || !user) {
+      return new Response(
+        JSON.stringify({ error: "Invalid or expired session" }),
+        { status: 401, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+      );
+    }
+
     const { imageData, frameLabel } = await req.json();
     
     if (!imageData) {
-      console.error("No image data provided");
       return new Response(
         JSON.stringify({ error: "No image data provided" }),
         { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
@@ -72,7 +95,7 @@ serve(async (req) => {
       );
     }
 
-    console.log(`Analyzing archery form${frameLabel ? ` - Frame: ${frameLabel}` : ""}...`);
+    console.log(`Analyzing archery form for user ${user.id}${frameLabel ? ` - Frame: ${frameLabel}` : ""}...`);
 
     const response = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
       method: "POST",
@@ -140,12 +163,11 @@ serve(async (req) => {
       );
     }
 
-    console.log("AI response received:", content.substring(0, 200));
+    console.log("AI response received successfully");
 
     // Parse the JSON response
     let analysis;
     try {
-      // Extract JSON from the response (handle markdown code blocks)
       const jsonMatch = content.match(/```json\s*([\s\S]*?)\s*```/) || 
                         content.match(/```\s*([\s\S]*?)\s*```/) ||
                         [null, content];
@@ -153,12 +175,11 @@ serve(async (req) => {
       analysis = JSON.parse(jsonStr.trim());
     } catch (parseError) {
       console.error("Failed to parse AI response as JSON:", parseError);
-      // Return a structured response even if parsing fails
       analysis = {
         overallScore: 7,
         strengths: ["Good effort captured in this photo"],
         improvements: ["Unable to fully parse detailed feedback - please try again with a clearer photo"],
-        keyRecommendation: content.substring(0, 200),
+        keyRecommendation: "Please try again with a clearer photo",
         techniquesIdentified: [],
       };
     }
@@ -169,7 +190,7 @@ serve(async (req) => {
   } catch (error) {
     console.error("Error in analyze-technique function:", error);
     return new Response(
-      JSON.stringify({ error: error instanceof Error ? error.message : "Unknown error" }),
+      JSON.stringify({ error: "An unexpected error occurred. Please try again." }),
       { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } }
     );
   }
