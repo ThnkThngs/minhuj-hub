@@ -1,5 +1,7 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
+import { generateText } from "npm:ai";
+import { createLovableAiGatewayProvider } from "../_shared/ai-gateway.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -7,7 +9,7 @@ const corsHeaders = {
 };
 
 const getSystemPrompt = (frameLabel?: string) => {
-  const phaseContext = frameLabel 
+  const phaseContext = frameLabel
     ? `You are analyzing the "${frameLabel}" phase of the archer's shooting sequence. Focus your analysis specifically on what should be happening during this phase.`
     : "";
 
@@ -78,7 +80,7 @@ serve(async (req) => {
     }
 
     const { imageData, frameLabel } = await req.json();
-    
+
     if (!imageData) {
       return new Response(
         JSON.stringify({ error: "No image data provided" }),
@@ -95,66 +97,58 @@ serve(async (req) => {
       );
     }
 
-    console.log(`Analyzing archery form for user ${user.id}${frameLabel ? ` - Frame: ${frameLabel}` : ""}...`);
+    console.log(
+      `Analyzing archery form for user ${user.id}${frameLabel ? ` - Frame: ${frameLabel}` : ""}...`
+    );
 
-    const response = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${LOVABLE_API_KEY}`,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        model: "google/gemini-2.5-flash",
+    const gateway = createLovableAiGatewayProvider(LOVABLE_API_KEY);
+    const model = gateway("google/gemini-2.5-flash");
+
+    let content: string;
+    try {
+      const result = await generateText({
+        model,
+        system: getSystemPrompt(frameLabel),
         messages: [
-          { role: "system", content: getSystemPrompt(frameLabel) },
           {
             role: "user",
             content: [
               {
                 type: "text",
-                text: frameLabel 
+                text: frameLabel
                   ? `Analyze this "${frameLabel}" phase of the archer's form and provide feedback specific to this moment in the shot sequence.`
                   : "Please analyze this archery form photo and provide feedback based on classical Islamic archery techniques.",
               },
               {
-                type: "image_url",
-                image_url: {
-                  url: imageData,
-                },
+                type: "image",
+                image: imageData,
               },
             ],
           },
         ],
-      }),
-    });
-
-    if (!response.ok) {
-      const errorText = await response.text();
-      console.error("AI gateway error:", response.status, errorText);
-      
-      if (response.status === 429) {
+      });
+      content = result.text;
+    } catch (aiError: any) {
+      const status = aiError?.statusCode ?? aiError?.status;
+      console.error("AI gateway error:", status, aiError?.message);
+      if (status === 429) {
         return new Response(
           JSON.stringify({ error: "Rate limit exceeded. Please try again in a moment." }),
           { status: 429, headers: { ...corsHeaders, "Content-Type": "application/json" } }
         );
       }
-      
-      if (response.status === 402) {
+      if (status === 402) {
         return new Response(
           JSON.stringify({ error: "AI credits depleted. Please add credits to continue." }),
           { status: 402, headers: { ...corsHeaders, "Content-Type": "application/json" } }
         );
       }
-      
       return new Response(
         JSON.stringify({ error: "Failed to analyze image" }),
         { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } }
       );
     }
 
-    const data = await response.json();
-    const content = data.choices?.[0]?.message?.content;
-    
     if (!content) {
       console.error("No content in AI response");
       return new Response(
@@ -168,9 +162,10 @@ serve(async (req) => {
     // Parse the JSON response
     let analysis;
     try {
-      const jsonMatch = content.match(/```json\s*([\s\S]*?)\s*```/) || 
-                        content.match(/```\s*([\s\S]*?)\s*```/) ||
-                        [null, content];
+      const jsonMatch =
+        content.match(/```json\s*([\s\S]*?)\s*```/) ||
+        content.match(/```\s*([\s\S]*?)\s*```/) ||
+        [null, content];
       const jsonStr = jsonMatch[1] || content;
       analysis = JSON.parse(jsonStr.trim());
     } catch (parseError) {
@@ -178,7 +173,9 @@ serve(async (req) => {
       analysis = {
         overallScore: 7,
         strengths: ["Good effort captured in this photo"],
-        improvements: ["Unable to fully parse detailed feedback - please try again with a clearer photo"],
+        improvements: [
+          "Unable to fully parse detailed feedback - please try again with a clearer photo",
+        ],
         keyRecommendation: "Please try again with a clearer photo",
         techniquesIdentified: [],
       };
